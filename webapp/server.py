@@ -61,4 +61,3 @@ def start_mqtt_client():
 if __name__ == '__main__':
     threading.Thread(target=start_server).start()
     start_mqtt_client()
-
