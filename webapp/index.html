@@ -2,56 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>OBU Movement Map</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OBU Movement Tracker - University of Aveiro</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <style>
-        #map {
-            height: 100vh;
-            width: 100%;
-        }
-    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <div id="map" style="height: 600px;"></div>
+
     <script>
-        // University of Aveiro center coordinates
-        var initialLatLng = [40.6304, -8.6573]; 
-        var map = L.map('map').setView(initialLatLng, 16); 
+        var map = L.map('map').setView([40.64, -8.65], 15); // Initial view centered on University of Aveiro campus
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var markers = {};
-        var bounds = new L.LatLngBounds();
+        var obuMarkers = {};
 
-        function updateMap(data) {
-            var stationId = data.station_id;
-            var lat = data.latitude;
-            var lon = data.longitude;
-            var status = data.status;
+        var eventSource = new EventSource('/events'); // Connect to server for real-time updates
 
-            if (markers[stationId]) {
-                map.removeLayer(markers[stationId]);
+        eventSource.onmessage = function(event) {
+            var obuData = JSON.parse(event.data);
+            var stationId = obuData.station_id;
+            var latitude = obuData.latitude;
+            var longitude = obuData.longitude;
+
+            if (!(stationId in obuMarkers)) {
+                obuMarkers[stationId] = L.marker([latitude, longitude]).addTo(map)
+                    .bindPopup(`OBU ${stationId}<br>(${latitude}, ${longitude})`);
+            } else {
+                obuMarkers[stationId].setLatLng([latitude, longitude]);
             }
-
-            var marker = L.marker([lat, lon]).addTo(map);
-            marker.bindPopup(`Station ${stationId}: ${status}`).openPopup();
-            markers[stationId] = marker;
-            bounds.extend([lat, lon]);
-
-            // Fit the map to the bounds including all markers
-            map.fitBounds(bounds);
-        }
-
-        var evtSource = new EventSource("/events");
-
-        evtSource.onmessage = function(event) {
-            var data = JSON.parse(event.data);
-            updateMap(data);
         };
     </script>
 </body>
