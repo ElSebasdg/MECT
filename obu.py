@@ -3,44 +3,27 @@ import json
 import paho.mqtt.client as mqtt
 import datetime
 
-# Broker details
 BROKER_IP = "192.168.98.11"
 BROKER_PORT = 1883
 
-# MQTT callback for connection
+# Callback when the client connects
 def on_connect(client, userdata, flags, rc):
     print(f"Connected with result code {rc}")
-    client.subscribe("vanetza/parking_status")  # Subscribe to parking status
-    client.subscribe("obu/to/rsu")  # Subscribe to messages from OBU to RSU
-    client.subscribe("rsu/to/obu")  # Subscribe to messages from RSU to OBU
+    client.subscribe("rsu/to/obu")  # Subscribe to responses from RSU
 
-# MQTT callback for incoming messages
+# Callback when a message is received
 def on_message(client, userdata, msg):
-    message = json.loads(msg.payload)
-    topic = msg.topic
-    
-    if topic == "obu/to/rsu":
-        print(f"Received message from OBU: {message}")
-        process_obu_message(client, message)
-    elif topic == "rsu/to/obu":
-        print(f"Received message from RSU: {message}")
-        process_rsu_message(client, message)
-    else:
-        print(f"Received message on {topic}: {message}")
+    try:
+        message = json.loads(msg.payload)
+        print(f"Received message on {msg.topic}: {message}")
+    except json.JSONDecodeError:
+        print(f"Received non-JSON message on {msg.topic}: {msg.payload}")
 
-def process_obu_message(client, message):
-    # Example: RSU responds to OBU
-    response = {
-        "response": "Acknowledged by RSU",
-        "timestamp": datetime.datetime.utcnow().isoformat() + 'Z'
-    }
-    client.publish("rsu/to/obu", json.dumps(response))
-    print(f"RSU sent response: {response}")
+    # Handle the response from RSU
+    if msg.topic == "rsu/to/obu":
+        print(f"RSU response received: {message}")
 
-def process_rsu_message(client, message):
-    # Example: OBU processes message from RSU
-    print(f"OBU processing message: {message}")
-
+# Function to simulate OBU movements and send messages to RSU
 def simulate_obu_movements(client, obu_id, topic):
     animation_path = [
         [40.6312, -8.6564],
@@ -74,7 +57,7 @@ def simulate_obu_movements(client, obu_id, topic):
         client.publish(topic, json.dumps(message))
         print(f"OBU sent message: {message}")
         
-        # Send a message to RSU
+        # Send message to RSU
         rsu_message = {
             "obu_id": obu_id,
             "message": "OBU at new location",
@@ -86,10 +69,14 @@ def simulate_obu_movements(client, obu_id, topic):
         idx = (idx + 1) % len(animation_path)
         time.sleep(2)  # Adjust the sleep time for desired speed
 
+# Initialize the MQTT client
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 
+# Connect to the MQTT broker
 client.connect(BROKER_IP, BROKER_PORT, 60)
 
+# Start the simulation in a non-blocking way
+client.loop_start()
 simulate_obu_movements(client, 1, "vanetza/parking_status")
