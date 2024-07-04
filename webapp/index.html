@@ -28,24 +28,36 @@
         var bounds = new L.LatLngBounds();
 
         // Function to add markers to the map
-        function addMarkerToMap(lat, lon, title) {
-            var redMarkerIcon = L.icon({
-                iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
+        function addMarkerToMap(lat, lon, iconUrl, title, zIndexOffset) {
+            var customIcon = L.icon({
+                iconUrl: iconUrl,
+                iconSize: [32, 32],    // Adjust size as needed
+                iconAnchor: [16, 16],  // Adjust anchor as needed
+                popupAnchor: [0, -16]  // Adjust popup anchor as needed
             });
 
-            var marker = L.marker([lat, lon], { icon: redMarkerIcon }).addTo(map);
+            var marker = L.marker([lat, lon], { icon: customIcon, zIndexOffset: zIndexOffset }).addTo(map);
             marker.bindPopup(title);
             markers[title] = marker;
             bounds.extend([lat, lon]);
         }
 
-        // Adding parking lot markers
-        addMarkerToMap(40.630321, -8.657457, "Parking Lot A");
-        addMarkerToMap(40.629555, -8.656427, "Parking Lot B");
+        // Adding parking lots markers
+        addMarkerToMap(40.630321, -8.657457, 'https://icons.veryicon.com/png/o/object/life-service-common-icons/parking-garage-1.png', "Parking Lot A", 1000);
+        addMarkerToMap(40.629555, -8.656427, 'https://icons.veryicon.com/png/o/object/life-service-common-icons/parking-garage-1.png', "Parking Lot B", 1000);
+
+        // Adding RSU marker
+        addMarkerToMap(40.629991, -8.657007, 'https://cdn2.iconfinder.com/data/icons/metro-uinvert-dock/256/Signal.png', "RSU", 0);
+
+        // Initialize OBU marker (assuming initial coordinates)
+        var obuIcon = L.icon({
+            iconUrl: 'https://cdn2.iconfinder.com/data/icons/electric-transport/100/electric_scooter_1-2-512.png',
+            iconSize: [32, 32],    // Adjust size as needed
+            iconAnchor: [16, 16],  // Adjust anchor as needed
+            popupAnchor: [0, -16]  // Adjust popup anchor as needed
+        });
+
+        var obuMarker = L.marker(initialLatLng, { icon: obuIcon }).addTo(map);
 
         function updateMap(data) {
             var stationId = data.station_id;
@@ -53,13 +65,9 @@
             var lon = data.longitude;
             var status = data.status;
 
-            if (markers[stationId]) {
-                map.removeLayer(markers[stationId]);
-            }
-
-            var marker = L.marker([lat, lon]).addTo(map);
-            marker.bindPopup(`Station ${stationId}: ${status}`).openPopup();
-            markers[stationId] = marker;
+            // Update the position of the OBU marker
+            obuMarker.setLatLng([lat, lon]);
+            obuMarker.bindPopup(`Station ${stationId}: ${status}`).openPopup();
             bounds.extend([lat, lon]);
 
             map.fitBounds(bounds);
