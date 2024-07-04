@@ -2,15 +2,12 @@ from http.server import SimpleHTTPRequestHandler, HTTPServer
 import json
 import threading
 import time
-import random
-import datetime
 import paho.mqtt.client as mqtt
 
-# MQTT Configuration
-RSU_BROKER_IP = "192.168.98.11"  # IP address of the RSU
+RSU_BROKER_IP = "192.168.98.11"  # IP address of the MQTT broker
 BROKER_PORT = 1883
+MQTT_TOPICS = ["vanetza/announce", "vanetza/parking_status"]
 
-# SSE clients
 clients = []
 
 class SSEHandler(SimpleHTTPRequestHandler):
@@ -35,13 +32,14 @@ class SSEHandler(SimpleHTTPRequestHandler):
 
 def on_connect(client, userdata, flags, rc):
     print(f"Connected to MQTT broker with code {rc}")
-    client.subscribe("vanetza/announce")
-    client.subscribe("vanetza/parking_status")
+    for topic in MQTT_TOPICS:
+        client.subscribe(topic)
 
 def on_message(client, userdata, msg):
     print(f"Received message on {msg.topic}: {msg.payload.decode()}")
-    data = json.loads(msg.payload.decode())
-    notify_clients(data)
+    if msg.topic == "vanetza/parking_status":
+        data = json.loads(msg.payload.decode())
+        notify_clients(data)
 
 def notify_clients(data):
     for client in clients:
@@ -62,35 +60,6 @@ def start_mqtt_client():
     client.on_message = on_message
     client.connect(RSU_BROKER_IP, BROKER_PORT, 60)
     client.loop_forever()
-
-def simulate_obu_movements(client, obu_id, topic):
-    animation_path = [
-        [40.6315, -8.6589],  # Main Entrance
-        [40.6310, -8.6595],  # Near Library
-        [40.6300, -8.6590],  # Middle of Rua de Santiago
-        [40.6295, -8.6580],  # Near Cafeteria
-        [40.6290, -8.6575],  # End of Rua de Santiago
-    ]
-    
-    idx = 0
-    while True:
-        lat, lon = animation_path[idx]
-        
-        timestamp = datetime.datetime.utcnow().isoformat() + 'Z'
-        message = {
-            "station_id": obu_id,
-            "status": "moving",
-            "latitude": lat,
-            "longitude": lon,
-            "timestamp": timestamp
-        }
-        
-        client.publish(topic, json.dumps(message))
-        print(f"Sent message: {message}")
-        
-        idx = (idx + 1) % len(animation_path)
-        
-        time.sleep(random.randint(5, 15))
 
 if __name__ == '__main__':
     threading.Thread(target=start_server).start()

@@ -25,6 +25,21 @@
 
         var markers = {};
 
+        // Custom animation path
+        var animationPath = [];
+
+        // Event listener for map click
+        map.on('click', function(e) {
+            var lat = e.latlng.lat.toFixed(4);
+            var lon = e.latlng.lng.toFixed(4);
+            
+            // Add clicked coordinates to animation path
+            animationPath.push([lat, lon]);
+
+            console.log("Clicked at: " + lat + ", " + lon);
+            console.log("Current animation path: ", animationPath);
+        });
+
         function updateMap(data) {
             var stationId = data.station_id;
             var lat = data.latitude;
