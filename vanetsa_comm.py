@@ -4,50 +4,56 @@ import paho.mqtt.client as mqtt
 import random
 import datetime
 
-BROKER_IP = "192.168.98.11"  # Replace with the IP of your RSU or MQTT broker
+BROKER_IP = "192.168.98.11"  # Replace with the IP of your MQTT broker
 BROKER_PORT = 1883
+MQTT_TOPIC = "vanetza/parking_status"
 
 def on_connect(client, userdata, flags, rc):
     print(f"Connected with result code {rc}")
-    client.subscribe("vanetza/parking_status")
+    client.subscribe(MQTT_TOPIC)
 
 def on_message(client, userdata, msg):
     message = json.loads(msg.payload)
     print(f"Received message on {msg.topic}: {message}")
 
-def get_university_aveiro_coordinates():
-    # Specific coordinates within the University of Aveiro campus
-    return [
-        [40.6304, -8.6573],  # Campus Center
-        [40.6287, -8.6581],  # Library
-        [40.6315, -8.6589],  # Main Entrance
-        [40.6322, -8.6570],  # Parking Lot A
-        [40.6292, -8.6550],  # Parking Lot B
+def simulate_obu_movements(client, obu_id):
+    animation_path = [
+        [40.6312, -8.6564],
+        [40.6312, -8.6563],
+        [40.6305, -8.6554],
+        [40.6292, -8.6550],
+        [40.6285, -8.6561],
+        [40.6289, -8.6576],
+        [40.6294, -8.6582],
+        [40.6298, -8.6588],
+        [40.6301, -8.6592],
+        [40.6305, -8.6587],
+        [40.6308, -8.6585],
+        [40.6312, -8.6581],
+        [40.6314, -8.6578]
     ]
 
-def simulate_obu_movements(client, obu_id, topic):
-    coordinates = get_university_aveiro_coordinates()
-    while True:
-        # Randomly select a location from the predefined list
-        location = random.choice(coordinates)
+    client.connect(BROKER_IP, BROKER_PORT, 60)
+    client.loop_start()
+
+    for lat, lon in animation_path:
         timestamp = datetime.datetime.utcnow().isoformat() + 'Z'
         message = {
             "station_id": obu_id,
-            "status": "parking_request",
-            "latitude": location[0],
-            "longitude": location[1],
+            "status": "moving",
+            "latitude": lat,
+            "longitude": lon,
             "timestamp": timestamp
         }
-        client.publish(topic, json.dumps(message))
+        client.publish(MQTT_TOPIC, json.dumps(message))
         print(f"Sent message: {message}")
-        time.sleep(random.randint(5, 15))  # Random sleep interval
+        time.sleep(2)
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
+    client.loop_stop()
 
-client.connect(BROKER_IP, BROKER_PORT, 60)
+if __name__ == '__main__':
+    client = mqtt.Client()
+    client.on_connect = on_connect
+    client.on_message = on_message
 
-# Start movement simulation for each OBU
-ob1_topic = "vanetza/parking_status"
-simulate_obu_movements(client, 1, ob1_topic)
+    simulate_obu_movements(client, obu_id=1)
