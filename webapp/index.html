@@ -16,9 +16,7 @@
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        // University of Aveiro center coordinates
-        var initialLatLng = [40.6304, -8.6573]; 
-        var map = L.map('map').setView(initialLatLng, 16); 
+        var map = L.map('map').setView([40.6304, -8.6573], 16);  // University of Aveiro center coordinates
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
@@ -26,7 +24,6 @@
         }).addTo(map);
 
         var markers = {};
-        var bounds = new L.LatLngBounds();
 
         function updateMap(data) {
             var stationId = data.station_id;
@@ -34,17 +31,14 @@
             var lon = data.longitude;
             var status = data.status;
 
-            if (markers[stationId]) {
-                map.removeLayer(markers[stationId]);
+            if (!markers[stationId]) {
+                markers[stationId] = L.marker([lat, lon]).addTo(map);
+                markers[stationId].bindPopup(`Station ${stationId}: ${status}`).openPopup();
+            } else {
+                markers[stationId].setLatLng([lat, lon]);
             }
 
-            var marker = L.marker([lat, lon]).addTo(map);
-            marker.bindPopup(`Station ${stationId}: ${status}`).openPopup();
-            markers[stationId] = marker;
-            bounds.extend([lat, lon]);
-
-            // Fit the map to the bounds including all markers
-            map.fitBounds(bounds);
+            map.fitBounds(Object.values(markers).map(marker => marker.getLatLng()));
         }
 
         var evtSource = new EventSource("/events");
