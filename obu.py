@@ -69,12 +69,16 @@ def handle_acknowledgment(message):
     print(f"OBU received acknowledgment from RSU: {message}")
     parking_status = message.get("parking_status", {})
     available_parking = message.get("available_parking", [])
-
+    print("EHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n")
+    print("AVAILABLE: ", available_parking )
     # Select an available parking lot if any
     chosen_parking = None
     for parking in available_parking:
-        if not parking_status.get(parking["name"], True):  # Look for the first not occupied parking
+        if parking_status.get(parking["name"], True):  # Look for the first not occupied parking
+
             chosen_parking = parking
+            print("\nAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n")
+            print("chosen_parking: ", chosen_parking )
             break
 
     # Update OBU routes based on parking availability
