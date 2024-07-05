@@ -44,6 +44,12 @@ OBUs = [
     }
 ]
 
+
+AVAILABLE_PARKING = [
+    [40.630321, -8.657457],
+    [40.629555, -8.656427]
+]
+
 # Callback function when the OBU connects to the broker
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
@@ -136,7 +142,12 @@ def simulate_obu_movements(client, obu_data):
                 print(f"OBU {obu_id} continues to its next destination.")
         
 
+        print(f"\nOBU {obu_id} is currently at: Latitude {lat}, Longitude {lon}\n")  # Print current position
         print("\n idx: ", idx, "\n")
+
+        for parking in AVAILABLE_PARKING:
+            if abs(lat - parking[0]) < 1e-6 and abs(lon - parking[1]) < 1e-6:
+                obu_data['animation_path'] = [parking]  # Set animation_path to the parking location
 
         idx = (idx + 1) % len(animation_path)
         time.sleep(2)  # Adjust the sleep time for desired speed
