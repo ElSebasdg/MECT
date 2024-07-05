@@ -58,7 +58,6 @@ OBUs = [
     }
 ]
 
-
 AVAILABLE_PARKING = [
     [40.630321, -8.657457],
     [40.629555, -8.656427]
@@ -89,22 +88,18 @@ def handle_acknowledgment(message):
     print(f"OBU received acknowledgment from RSU: {message}")
     parking_status = message.get("parking_status", {})
     available_parking = message.get("available_parking", [])
-    print("EHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n")
-    print("AVAILABLE: ", available_parking )
+    
     # Select an available parking lot if any
     chosen_parking = None
     for parking in available_parking:
         if parking_status.get(parking["name"], True):  # Look for the first not occupied parking
-
             chosen_parking = parking
-            print("\nAHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH\n")
-            print("chosen_parking: ", chosen_parking )
             break
 
     # Update OBU routes based on parking availability
     for obu in OBUs:
         idx = obu.get('current_idx', 0)
-        if idx == 25:
+        if idx == 25:  # Update index if necessary
             if chosen_parking:
                 # Extend the route with the parking lot coordinates
                 extended_parking_route = PARKING_ROUTE + [[chosen_parking["latitude"], chosen_parking["longitude"]]]
@@ -121,15 +116,14 @@ def simulate_obu_movements(client, obu_data):
         obu_data['current_idx'] = idx  # Track current index
         animation_path = obu_data['animation_path']  # Fetch the latest path
         lat, lon = animation_path[idx]
-        
 
         print(f"\nOBU {obu_id} is currently at: Latitude {lat}, Longitude {lon}\n")  # Print current position
-        
 
         timestamp = datetime.datetime.utcnow().isoformat() + 'Z'
+        status = "parked" if len(animation_path) == 1 else "moving"
         message = {
             "station_id": obu_id,
-            "status": "moving",
+            "status": status,
             "latitude": lat,
             "longitude": lon,
             "timestamp": timestamp
@@ -142,22 +136,20 @@ def simulate_obu_movements(client, obu_data):
         # Publish to obu/to/rsu topic
         rsu_message = {
             "obu_id": obu_id,
-            "message": "OBU at new location",
+            "message": f"OBU {obu_id} at new location with status {status}",
             "location": {"lat": lat, "lon": lon},
             "timestamp": timestamp
         }
         client.publish("obu/to/rsu", json.dumps(rsu_message))
         
-        # Check if the OBU has reached index 12 and update its route if necessary
+        # Check if the OBU has reached index 25 and update its route if necessary
         if idx == 25:
             if 'chosen_parking' in obu_data:
                 print(f"OBU {obu_id} is parking at chosen parking lot.")
             else:
                 print(f"OBU {obu_id} continues to its next destination.")
-        
 
-        print(f"\nOBU {obu_id} is currently at: Latitude {lat}, Longitude {lon}\n")  # Print current position
-        print("\n idx: ", idx, "\n")
+        print(f"\n idx: {idx} \n")
 
         for parking in AVAILABLE_PARKING:
             if abs(lat - parking[0]) < 1e-6 and abs(lon - parking[1]) < 1e-6:
