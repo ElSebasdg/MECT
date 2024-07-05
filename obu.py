@@ -33,7 +33,21 @@ OBUs = [
             [40.6305, -8.6587],
             [40.6308, -8.6585],
             [40.6312, -8.6581],
+            [40.6314, -8.6578],
+            [40.6312, -8.6564],
+            [40.6312, -8.6563],
+            [40.6305, -8.6554],
+            [40.6292, -8.6550],
+            [40.6285, -8.6561],
+            [40.6289, -8.6576],
+            [40.6294, -8.6582],
+            [40.6298, -8.6588],
+            [40.6301, -8.6592],
+            [40.6305, -8.6587],
+            [40.6308, -8.6585],
+            [40.6312, -8.6581],
             [40.6314, -8.6578]
+            # Add as many as you want to extend the route
         ]
     },
     {
@@ -90,7 +104,7 @@ def handle_acknowledgment(message):
     # Update OBU routes based on parking availability
     for obu in OBUs:
         idx = obu.get('current_idx', 0)
-        if idx == 12:
+        if idx == 25:
             if chosen_parking:
                 # Extend the route with the parking lot coordinates
                 extended_parking_route = PARKING_ROUTE + [[chosen_parking["latitude"], chosen_parking["longitude"]]]
@@ -135,7 +149,7 @@ def simulate_obu_movements(client, obu_data):
         client.publish("obu/to/rsu", json.dumps(rsu_message))
         
         # Check if the OBU has reached index 12 and update its route if necessary
-        if idx == 12:
+        if idx == 25:
             if 'chosen_parking' in obu_data:
                 print(f"OBU {obu_id} is parking at chosen parking lot.")
             else:
