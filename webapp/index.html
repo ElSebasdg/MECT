@@ -16,8 +16,7 @@
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script>
-        var initialLatLng = [40.6304, -8.6573]; 
-        var map = L.map('map').setView(initialLatLng, 16); 
+        var map = L.map('map').setView([40.6304, -8.6573], 16); // Initial center position
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
@@ -49,28 +48,35 @@
         // Adding RSU marker
         addMarkerToMap(40.629991, -8.657007, 'https://cdn2.iconfinder.com/data/icons/metro-uinvert-dock/256/Signal.png', "RSU", 0);
 
-        // Initialize OBU marker (assuming initial coordinates)
-        var obuIcon = L.icon({
-            iconUrl: 'https://cdn2.iconfinder.com/data/icons/electric-transport/100/electric_scooter_1-2-512.png',
-            iconSize: [32, 32],    // Adjust size as needed
-            iconAnchor: [16, 16],  // Adjust anchor as needed
-            popupAnchor: [0, -16]  // Adjust popup anchor as needed
-        });
+        // Initialize OBUs (assuming initial coordinates)
+        var obus = {};
 
-        var obuMarker = L.marker(initialLatLng, { icon: obuIcon }).addTo(map);
+        function initializeObus() {
+            var obu1Icon = L.icon({
+                iconUrl: 'https://cdn2.iconfinder.com/data/icons/electric-transport/100/electric_scooter_1-2-512.png',
+                iconSize: [32, 32],    // Adjust size as needed
+                iconAnchor: [16, 16],  // Adjust anchor as needed
+                popupAnchor: [0, -16]  // Adjust popup anchor as needed
+            });
 
-        function updateMap(data) {
-            var stationId = data.station_id;
-            var lat = data.latitude;
-            var lon = data.longitude;
-            var status = data.status;
+            var obu2Icon = L.icon({
+                iconUrl: 'https://cdn2.iconfinder.com/data/icons/electric-transport/100/electric_scooter_1-2-512.png',
+                iconSize: [32, 32],    // Adjust size as needed
+                iconAnchor: [16, 16],  // Adjust anchor as needed
+                popupAnchor: [0, -16]  // Adjust popup anchor as needed
+            });
 
-            // Update the position of the OBU marker
+            obus[1] = L.marker([40.6314, -8.6578], { icon: obu1Icon }).addTo(map);
+            obus[2] = L.marker([40.6314, -8.6578], { icon: obu2Icon }).addTo(map);
+        }
+
+        initializeObus();
+
+        function updateObuPosition(obuId, lat, lon, status) {
+            var obuMarker = obus[obuId];
             obuMarker.setLatLng([lat, lon]);
-            obuMarker.bindPopup(`OBU Location: ${lat.toFixed(6)}, ${lon.toFixed(6)} (${status})`).openPopup();
-            //obuMarker.bindPopup(`Station ${stationId}: ${status}`).openPopup();
+            obuMarker.bindPopup(`OBU ${obuId} Location: ${lat.toFixed(6)}, ${lon.toFixed(6)} (${status})`).openPopup();
             bounds.extend([lat, lon]);
-
             map.fitBounds(bounds);
         }
 
@@ -78,7 +84,7 @@
 
         evtSource.onmessage = function(event) {
             var data = JSON.parse(event.data);
-            updateMap(data);
+            updateObuPosition(data.station_id, data.latitude, data.longitude, data.status);
         };
 
         // Event listener for click event on map

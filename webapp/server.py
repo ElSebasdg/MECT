@@ -8,7 +8,7 @@ RSU_BROKER_IP = "192.168.98.11"  # IP address of the MQTT broker
 BROKER_PORT = 1883
 MQTT_TOPICS = ["vanetza/announce", "vanetza/parking_status"]
 
-clients = []
+clients = {}
 
 class SSEHandler(SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -19,14 +19,17 @@ class SSEHandler(SimpleHTTPRequestHandler):
             self.send_header('Connection', 'keep-alive')
             self.end_headers()
 
-            clients.append(self)
+            client_id = self.client_address[0]
+            clients[client_id] = self
+
             try:
                 while True:
                     time.sleep(5)
             except Exception as e:
                 print(f"Error in SSEHandler: {e}")
             finally:
-                clients.remove(self)
+                if client_id in clients:
+                    del clients[client_id]
         else:
             super().do_GET()
 
@@ -42,11 +45,11 @@ def on_message(client, userdata, msg):
         notify_clients(data)
 
 def notify_clients(data):
-    for client in clients:
+    for client_id, client in clients.items():
         try:
             client.wfile.write(f"data: {json.dumps(data)}\n\n".encode('utf-8'))
         except Exception as e:
-            print(f"Error notifying client: {e}")
+            print(f"Error notifying client {client_id}: {e}")
 
 def start_server():
     server_address = ('', 8080)
