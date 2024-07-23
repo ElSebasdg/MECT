@@ -1,0 +1,76 @@
+What are some of the characteristics of ad-hoc networks?
+
+High Mobility: Because the nodes are mobile devices, their move makes the network change dynamically and consequently alter the network topology and stability. Nodes may join or leave the network dynamically, requiring constant adaptation of routing paths.
+
+High Bit Error Rate: Wireless communication in ad-hoc networks is susceptible to noise and interference, leading to a higher probability of packet loss. This can degrade the reliability and performance of data transmission.
+
+Unpredictability/Variability: Ad-hoc networks often exhibit unpredictable and variable conditions, making it challenging to accurately estimate parameters. Fluctuations in network characteristics can impact performance and require adaptive mechanisms.
+
+Contention: In ad-hoc networks, multiple nodes compete for the limited available airtime. The resulting interference and collision can cause packet loss and performance degradation.
+
+Poor performance of long connections: Long-duration connections in ad-hoc networks may suffer from deteriorated performance due to factors like route changes, varying link qualities, and contention for resources.
+
+
+
+
+
+Why does TCP perform poorly in adhoc/vehicular networks?
+
+is a reliable transport protocol widely used in traditional wired networks. However, it may not perform optimally in ad hoc or vehicular networks due to several reasons:
+
+TCP misinterprets route failures as congestion: In ad-hoc routes between nodes can be highly dynamic and prone to frequent changes or failures. TCP's congestion control mechanisms interpret packet loss as a sign of network congestion, leading to a reduction in the sending rate. However, in cases where packet loss occurs due to route failures rather than congestion, this response is not appropriate and can result in unnecessary throughput reduction.
+
+TCP misinterprets wireless errors as congestion: Wireless network, because of the medium they use, are prone to various error of transmission such as bit errors, interference and singal attenuation. TCP's control algorithm assumes the packet loss is primarily caused by network congestion and respondes accordingly. However in these types of enviroment, because packet loss can occur to various factors unrelated to congestion, the algorithm can reduce the sending bit rate without need, endering network performance.
+
+Delay spike causes TCP to invoke unnecessary retransmissions: d hoc and vehicular networks can experience significant variations in delay due to changing network conditions, route changes, or congestion. When TCP encounters a delay spike and perceives it as a sign of congestion, it invokes it's fast retransmission feature off the not ACKs packets, assuming they are lost. However because of the nature of the ad-hoc networks the delay spike can be only temporary and not caused by congestion thus leading to inefficiency and increased network overhead
+
+Inefficiency due to the loss of retransmitted packets: In wireless networks, retransmitted packets are more prone to loss compared to wired networks due to increased bit errors, interference, or collisions. When TCP retransmits packets, it expects them to be successfully delivered and acknowledged. However, in the presence of wireless impairments, the retransmitted packets themselves can be lost, leading to additional retransmissions and reduced overall efficiency.
+
+
+
+TCP VARIANTS:
+TCP variants aim to enhance performance by employing various techniques, including estimating the available bandwidth and exploiting buffering capability.
+
+TCP Cubic is a congestion control algorithm that exhibits an interesting characteristic: it is RTT (Round-Trip Time) independent. Unlike some other TCP variants that heavily rely on RTT measurements, TCP Cubic determines its window size based on the time passed since the last congestion occurrence rather than the current RTT. This is achieved by utilizing a cubic function of time, where the window size grows at a rate determined by the elapsed time. This approach allows TCP Cubic to be less sensitive to changes in RTT and more adaptable to dynamic network conditions. By focusing on the time elapsed since congestion rather than specific RTT values, TCP Cubic can provide stable and efficient congestion control even in environments with varying RTTs.
+
+TCP Vegas is a congestion control algorithm that detects congestion before packet loss occurs. It does this by monitoring the Round-Trip Time (RTT) of packets. If the RTT exceeds a certain threshold, TCP Vegas decreases its sending rate to ease congestion. It uses a gradual approach for data transmission and promptly retransmits lost packets. This proactive strategy helps maintain good network performance and reliability by preventing congestion without relying on packet loss alone. TCP Vegas is known for its simplicity and efficiency in managing congestion.
+
+TCP-BuS (Buffering capability and Sequence information) is a congestion control algorithm that makes TCP work better in fast and long-distance networks. It does this by keeping an eye on how full the network's buffer is and slowing down if it gets too full. It also pays attention to the order in which packets are sent and received, using that information to detect congestion before problems occur. By doing this, TCP-BuS helps prevent network congestion and makes communication more reliable in challenging network environments.
+
+QUIC (but it udp? xD)
+It uses UDP to carry its packets, making it easier to integrate into existing systems and networks.
+QUIC's handshake combines cryptographic negotiation (TLS) and transport parameter negotiation. This allows for quick exchange of application data.
+QUIC uses streams for communication between applications. There are two types: bidirectional streams for two-way data exchange and unidirectional streams for one-way data transmission. This design prevents one stream's issues from affecting others.
+QUIC has two levels of data flow control: stream flow control limits data on each stream, and connection flow control limits total data sent. This prevents buffer congestion and ensures fair resource utilization.
+QUIC separates reliability from ordered delivery. Packet numbers provide uniqueness and estimate Round-Trip Time (RTT). Packet loss is detected by missing acknowledgments (ACKs), and congestion control algorithms like CUBIC are used. Note that packet loss doesn't always mean congestion.
+In summary, QUIC offers efficient communication with UDP, quick data exchange, stream-based communication, effective flow control, and separate reliability and ordered delivery. It provides a reliable and high-performance protocol for modern networks.
+
+
+
+
+Describe the QoS trade-offs for UDP in IntServ and DiffServ like mechanisms.
+
+IntServ:
+
+The application specifies traffic and QoS parameters, and a resource reservation protocol estimates and reserves sufficient resources at each node along the path. However, in multi-hop wireless networks, estimating available resources becomes challenging. Because the medium is shared its hard, all traffic with the range reduces the available BW, to make resource reservation accurately. Node mobility along with the nature of wireless networks also doesn't help, because of the high dynamic nature of the network the BW fluctuates making it more difficult to make reservations. Performing resource reservation in a shared medium requires global coordination among nodes. This coordination becomes challenging to achieve and maintain, especially in large-scale and dynamic networks. At last, Resource reservation is typically pinned to a specific route. As routes change in a multi-hop wireless network, the reservation process needs to be repeated.
+
+DiffServ:
+ 
+The applications can select a specific class of service that aligns with their QoS requirements. These classes may offer different priorities, guarantees, or characteristics, allowing applications to indicate their desired level of service. The network requires admission control to prevent overload of specific classes of service. This control ensures that the network can accommodate the requested QoS for the chosen class. By checking resource availability, the network can accept or reject incoming flows based on their requested QoS parameters. However in multi-hop wireless networks because flows can come from all the nodes it makes it harder to manage and regulate the admission of flows into the network. Also as routes change dynamically the distribution of flows across the network varies, this variability makes it challenging to mantain consistent QoS, additionally, the fluctuation of the available BW further complicates the task of maintaing QoS.
+
+
+
+Why is routing important for QoS?
+
+Routing for QoS, enables a source node to find paths to a destination node that complies with the QoS requirements needed. This information helps in making informed decisions for transmitting data with the desired QoS. For QoS to be implemented in routing one would need to incorporate the QoS stats into the routing metrics. This change would add aditional overhead thus impacting network perfromace and scalability.
+With QoS routing being possible it would introduce additional complexity in terms of route maintaince, because as network conditions change, routes needed to be updated or recalculated to reflect the 'new' QoS parameters. Additionaly, QoS routing should be able to handle node mobility effectively. As nodes move within the network, routes need to be recalculated to maintain QoS requirements. The routing protocol should be responsive and adapt quickly to node mobility to ensure uninterrupted QoS.
+
+
+
+QoS for AODV:
+→ Add new fields to messages
+→ Changes to the routing table
+→ Only nodes that meet the QoS requirements com rebroadcast the RREQ
+In the event of loosing QoS params, the node originates a message to all depending
+nodes. Thin list of QoS may be caused in the increase of a node workload.
+

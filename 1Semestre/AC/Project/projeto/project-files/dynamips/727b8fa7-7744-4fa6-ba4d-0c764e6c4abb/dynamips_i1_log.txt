@@ -1,0 +1,83 @@
+Dec 21 13:46:23.043 HYPERVISOR: Release 0.2.23-amd64/Linux (tag 2023010200)
+Dec 21 13:46:23.043 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 60433.
+Dec 21 13:46:23.051 HYPERVISOR: exec_cmd: hypervisor version 
+Dec 21 13:46:23.051 HYPERVISOR: exec_cmd: hypervisor working_dir /home/rafael/GNS3/projects/projeto/project-files/dynamips 
+Dec 21 13:46:23.051 GENERAL: working_dir=/home/rafael/GNS3/projects/projeto/project-files/dynamips
+Dec 21 13:46:23.051 HYPERVISOR: exec_cmd: hypervisor working_dir /home/rafael/GNS3/projects/projeto/project-files/dynamips/727b8fa7-7744-4fa6-ba4d-0c764e6c4abb 
+Dec 21 13:46:23.051 GENERAL: working_dir=/home/rafael/GNS3/projects/projeto/project-files/dynamips/727b8fa7-7744-4fa6-ba4d-0c764e6c4abb
+Dec 21 13:46:23.051 HYPERVISOR: exec_cmd: vm create Lisbon 1 c7200 
+Dec 21 13:46:23.051 VM: VM Lisbon created.
+Dec 21 13:46:23.052 HYPERVISOR: exec_cmd: vm set_con_tcp_port Lisbon 5000 
+Dec 21 13:46:23.052 HYPERVISOR: exec_cmd: c7200 get_mac_addr Lisbon 
+Dec 21 13:46:23.052 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 13:46:23.052 HYPERVISOR: exec_cmd: vm slot_add_binding Lisbon 0 0 C7200-IO-FE 
+Dec 21 13:46:23.053 HYPERVISOR: exec_cmd: vm set_disk0 Lisbon 0 
+Dec 21 13:46:23.053 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 13:46:23.053 HYPERVISOR: exec_cmd: vm set_idle_pc Lisbon 0x62cc930c 
+Dec 21 13:46:23.053 HYPERVISOR: exec_cmd: vm set_ios Lisbon /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 13:46:23.053 HYPERVISOR: exec_cmd: c7200 set_mac_addr Lisbon ca01.58eb.0000 
+Dec 21 13:46:23.054 HYPERVISOR: exec_cmd: vm set_nvram Lisbon 512 
+Dec 21 13:46:23.054 HYPERVISOR: exec_cmd: vm set_ram Lisbon 512 
+Dec 21 13:46:23.054 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 13:46:23.054 HYPERVISOR: exec_cmd: vm slot_remove_binding Lisbon 0 0 
+Dec 21 13:46:23.054 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 13:46:23.054 HYPERVISOR: exec_cmd: vm slot_add_binding Lisbon 0 0 C7200-IO-2FE 
+Dec 21 13:46:23.055 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 13:46:23.055 HYPERVISOR: exec_cmd: vm slot_add_binding Lisbon 1 0 PA-2FE-TX 
+Dec 21 13:46:23.055 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 13:46:23.055 HYPERVISOR: exec_cmd: vm slot_add_binding Lisbon 2 0 PA-2FE-TX 
+Dec 21 13:46:23.055 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 13:46:23.055 HYPERVISOR: exec_cmd: vm slot_add_binding Lisbon 3 0 PA-2FE-TX 
+Dec 21 13:46:23.657 HYPERVISOR: exec_cmd: nio create_udp udp-4c9aa272-d987-4efc-8430-3ecde2de93ae 10002 127.0.0.1 10003 
+Dec 21 13:46:23.890 HYPERVISOR: exec_cmd: vm slot_add_nio_binding Lisbon 0 0 udp-4c9aa272-d987-4efc-8430-3ecde2de93ae 
+Dec 21 13:46:23.891 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 13:46:24.869 HYPERVISOR: exec_cmd: nio create_udp udp-45615e0a-8b9e-46fb-9ab4-d7c19605c3fa 10022 127.0.0.1 10023 
+Dec 21 13:46:24.870 HYPERVISOR: exec_cmd: vm slot_add_nio_binding Lisbon 0 1 udp-45615e0a-8b9e-46fb-9ab4-d7c19605c3fa 
+Dec 21 13:46:24.871 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 14:13:54.223 HYPERVISOR: exec_cmd: vm create Ghost 0 c7200 
+Dec 21 14:13:54.223 VM: VM Ghost created.
+Dec 21 14:13:54.227 HYPERVISOR: exec_cmd: vm set_ios Ghost /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:13:54.228 HYPERVISOR: exec_cmd: vm set_ghost_status Ghost 1 
+Dec 21 14:13:54.229 HYPERVISOR: exec_cmd: vm set_ghost_file Ghost /home/rafael/GNS3/projects/projeto/project-files/dynamips/c7200-advipservicesk9-mz.152-4.S5.image-512.ghost 
+Dec 21 14:13:54.229 HYPERVISOR: exec_cmd: vm set_ram Ghost 512 
+Dec 21 14:13:54.230 HYPERVISOR: exec_cmd: vm get_status Ghost 
+Dec 21 14:13:54.324 HYPERVISOR: exec_cmd: vm set_config Ghost configs/i0_startup-config.cfg 
+Dec 21 14:13:54.325 HYPERVISOR: exec_cmd: vm start Ghost 
+Dec 21 14:13:56.401 HYPERVISOR: exec_cmd: vm get_status Ghost 
+Dec 21 14:13:56.403 HYPERVISOR: exec_cmd: vm stop Ghost 
+Dec 21 14:13:56.681 VM: VM Ghost shutdown.
+Dec 21 14:13:56.682 HYPERVISOR: exec_cmd: vm extract_config Ghost 
+Dec 21 14:13:56.684 HYPERVISOR: exec_cmd: vm clean_delete Ghost 
+Dec 21 14:13:56.684 VM: VM Ghost destroyed.
+Dec 21 14:13:56.686 HYPERVISOR: exec_cmd: vm set_ghost_status Lisbon 2 
+Dec 21 14:13:56.687 HYPERVISOR: exec_cmd: vm set_ghost_file Lisbon /home/rafael/GNS3/projects/projeto/project-files/dynamips/c7200-advipservicesk9-mz.152-4.S5.image-512.ghost 
+Dec 21 14:13:56.688 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 14:13:56.690 HYPERVISOR: exec_cmd: vm set_config Lisbon configs/i1_startup-config.cfg 
+Dec 21 14:13:56.690 HYPERVISOR: exec_cmd: vm start Lisbon 
+Dec 21 14:14:26.934 HYPERVISOR: exec_cmd: vm extract_config Lisbon 
+Dec 21 14:15:11.064 HYPERVISOR: exec_cmd: vm set_ios Lisbon /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:15:11.758 HYPERVISOR: exec_cmd: vm set_ios Lisbon /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:15:30.058 HYPERVISOR: exec_cmd: vm set_ios Lisbon /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:16:32.784 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 14:16:32.785 HYPERVISOR: exec_cmd: vm stop Lisbon 
+Dec 21 14:16:32.927 VM: VM Lisbon shutdown.
+Dec 21 14:16:32.928 HYPERVISOR: exec_cmd: vm extract_config Lisbon 
+Dec 21 14:16:56.468 HYPERVISOR: exec_cmd: vm set_ios Lisbon /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:17:24.332 HYPERVISOR: exec_cmd: vm set_ghost_status Lisbon 2 
+Dec 21 14:17:24.337 HYPERVISOR: exec_cmd: vm set_ghost_file Lisbon /home/rafael/GNS3/projects/projeto/project-files/dynamips/c7200-advipservicesk9-mz.152-4.S5.image-512.ghost 
+Dec 21 14:17:24.338 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 14:17:24.339 HYPERVISOR: exec_cmd: vm set_config Lisbon configs/i1_startup-config.cfg 
+Dec 21 14:17:24.340 HYPERVISOR: exec_cmd: vm start Lisbon 
+Dec 21 14:23:46.834 HYPERVISOR: exec_cmd: vm set_ios Lisbon /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:25:43.934 HYPERVISOR: exec_cmd: nio create_udp udp-d99b5748-3c1a-4ef3-ad7c-5cdc918766c7 10026 127.0.0.1 10027 
+Dec 21 14:25:43.936 HYPERVISOR: exec_cmd: vm slot_add_nio_binding Lisbon 1 0 udp-d99b5748-3c1a-4ef3-ad7c-5cdc918766c7 
+Dec 21 14:25:43.936 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 14:25:43.936 HYPERVISOR: exec_cmd: vm slot_enable_nio Lisbon 1 0 
+Dec 21 14:25:49.401 HYPERVISOR: exec_cmd: nio create_udp udp-b3ae1773-85f4-4ea1-8beb-1f1c74e7bb03 10032 127.0.0.1 10033 
+Dec 21 14:25:49.402 HYPERVISOR: exec_cmd: vm slot_add_nio_binding Lisbon 1 1 udp-b3ae1773-85f4-4ea1-8beb-1f1c74e7bb03 
+Dec 21 14:25:49.403 HYPERVISOR: exec_cmd: vm get_status Lisbon 
+Dec 21 14:25:49.403 HYPERVISOR: exec_cmd: vm slot_enable_nio Lisbon 1 1 
+Dec 21 14:43:24.680 HYPERVISOR: exec_cmd: vm extract_config Lisbon 
+Dec 21 15:10:54.755 HYPERVISOR: exec_cmd: vm extract_config Lisbon 
+Dec 21 15:58:53.300 HYPERVISOR: exec_cmd: vm extract_config Lisbon 
+Dec 21 16:29:59.838 HYPERVISOR: exec_cmd: vm extract_config Lisbon 

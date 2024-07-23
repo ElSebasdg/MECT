@@ -1,0 +1,75 @@
+
+Cyclic Redundancy Check (CRC)- its used in error detection in digital communication. It begins by explaining the division algorithm and the division theorem in algebra, which is the basis for the algorithm. 
+
+The article then defines an integral domain and explains its properties. It goes on to describe how the division theorem can be used to detect errors in a message transmitted in a communication channel or stored in a medium.
+
+The article then explains how a polynomial b(x) can be chosen to minimize the probability of undetected errors in the received message or retrieved word. The polynomial b(x) is called the generating polynomial for a CRC scheme.
+
+
+ASSIGNMENT:
+The article concludes by presenting an assignment to design a digital circuit for computing the check string, CRC-8 Bluetooth based, associated with a 16-bit data word and a digital circuit for checking the existence of errors on the 24-bit CRC-8 Bluetooth coded word. The assignment requires the investigation of the best possible algorithms for the implementation of each of the circuits.
+
+
+
+------------------------------------------------EXAMPLE:----------------------------------------------
+We'll use a 16-bit data word and b(X) => CRC-8 Bluetooth generating polynomial
+                                         -> x^8 + x^7 + x^5 + x^2 + x¹ + 1 = 11010011
+
+Let's say our 16-bit data word is 1101001100110101.
+				-> x^15 + x^14 + x^11 + x^10 + x^7 + x^6 + x^3 + x^2 + 1
+				
+1. Append 8 zeros(L-1, L is the length of b(x)) to the end of the polynomial representation of the 16-bit data word. This gives us: 110100110011010100000000 -> a(x) * x⁸
+->x^23 + x^22 + x^19 + x^18 + x^15 + x^14 + x^11 + x^10 + x^7 + x^6 + x^3 + x^2 + x + 1.
+
+2.Perform polynomial division using the generating polynomial. The remainder of the division will be the check string (CRC). This step involves a lot of calculations and is usually done by a computer or a digital circuit. For simplicity, let's say the remainder is x^7 + x^6 + x^4 + x^3 + 1, which corresponds to the binary number 11011000.
+
+    
+				------------------------ | 110100111
+				110100110011010100000000 | 1000000011001011
+				110100111
+				---------
+				 00000001011010100000000
+				 000000000
+				 ---------
+				         ....
+					       ---------
+						10010001 -> r(x)
+
+
+
+The check string (CRC) is the binary representation of the remainder. So, our check string is 10010001.
+
+3.Append the check string (CRC) to the original 16-bit data word to form the 24-bit coded word. This gives us 1101001100110101 + 10010001 = 110100110011010110010001, this is the word we want to send.
+
+4.Lets say the received 24-bit coded word is (110100110011010110010011).
+To check where the error has occurred we can apply this formula e(x) = t'(x) - t(x) where t(x) represents the computed polynomial for the message to be transmitted, t'(x) represents the received message or the retrieved word.
+
+t(x) = 110100110011010110010001
+t'(x) = 110100110011010110010011 -> a(x) 
+e(x) = t'(x) - t(x) = 000000000000000000000010
+
+e(x) can be thought of as a string of zeros and ones where the one bits match the wrong symbol locations.
+
+				e(x)	110100110011010110010011 -> 24bits
+					------------------------, remainder(r(x)) is 00000010
+				b(x)		110100111         
+				
+Since b(x) does not divide e(x), we know that there is an error in the received word. We can then request the sender to retransmit the message.
+If the case remainder is zero, no errors were detected. If the remainder is non-zero.
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+Lets say the received 24-bit coded word is (110100110011010110010011).
+Now, let's check if 24-bit coded word and want to check for errors. For that we divide the received word t'(x) by b(x)(11010011). If the remainder is 0, the received word is error-free.
+
+	110100110011010110010011
+	------------------------, the remainder is ≠ 0 so there it has been an error in the transmited 
+		110100111         message.
+ 
+
+
+
+
+
