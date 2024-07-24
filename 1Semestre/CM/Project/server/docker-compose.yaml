@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    build: 
+      context: grafana
+      dockerfile: Dockerfile
+      args:
+        - INFLUX_TOKEN=${INFLUX_TOKEN}
+    env_file:
+      - .env
+    # environment:
+    #  - GF_INSTALL_PLUGINS=grafana-mqtt-datasource
+    ports:
+     - '3000:3000'
+    volumes:
+      - grafana-storage:/var/lib/grafana
+  
+  mosquitto:
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto:/etc/mosquitto
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    restart: unless-stopped
+    env_file:
+      - influxdb.env
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb:/var/lib/influxdb
+  
+  # mqtt-influxdb-bridge:
+  #   build: 
+  #     context: mqtt_influx_bridge
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - .env
+  #   container_name: mqtt-influxdb-bridge
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - mosquitto
+  #     - influxdb
+
+volumes:
+  mqtt-broker-data: {}
+  grafana-storage: {}
+  influxdb: {}

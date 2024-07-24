@@ -1,0 +1,18 @@
+{
+    "network":
+    {
+        "ssid": "LAPTOP-J4N3BEUU",
+        "password": "1780=k8L"
+    },
+    "mqtt":
+    {
+        "client_id": "gateway",
+        "server": "192.168.137.1",
+        "port": 1883,
+        "topics": {
+            "publish": "cm-project/gateway",
+            "subscribe": "cm-project/controller/#"
+        }
+    },
+    "device_name": "gateway"
+}

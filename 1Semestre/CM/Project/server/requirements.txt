@@ -1,0 +1,4 @@
+paho-mqtt
+network
+pycom
+mpy-repl-tool
