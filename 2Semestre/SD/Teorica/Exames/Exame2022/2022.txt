@@ -1,0 +1,58 @@
+1.The middleware serves as a compatability layer bettween the different systems, made to assure portability compatability and security bettween the different systems. It creates an abstraction layer of the harware , network system and OS.JVM can be tough of as middleware since its compiled programs are portable bettween systems and garantees compatability creating platform independent code.
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
+2.No scheme but basicly 
+
+-Request serialization
+    -Only one client request at a time as such there is no need to assure mutual exclusion
+    -The least effective of the three variants, since it does not make use of other request processing dead times and can
+    cause situations of busy waiting.
+    
+-Server Replication
+    -Multiple instances of the server proxy agent are created as such clients are served concurrently
+    -Need to assure mutual exclusion
+    -Allows better perfomance due to the use of dead times trough concurrency
+ 
+-Resource Replication
+    -The entire service is replicated trough multiple machines
+    -Multiple copies of the shared resource
+    -Allows for the failure of one(or multiple servers)
+    -client Request distributed trough multiple machines by certain parameters (locations , delay, not in use etc...)
+
+All can be implemented trough message passing and Remote object calling (Não sei justificar)
+
+
+3. 
+
+i) tá certo no enunciado
+
+
+ii) a || h  
+    a || l
+    e -> i
+    i -> j
+    d -> e
+    f ->l
+
+
+iii) ¯\_(ツ)_/¯
+
+
+
+4.) The distributor and backup server need to maintain both the system state data and the request data along with the metadata and system configuration data that govern the systems behaviour.
+
+The distributor and backup become aware of a primary server failure through Heartbeat or periodic checks. The backup server can monitor the primary server's availability through regular heartbeat messages, assuming failure from a time-out.
+
+To overcome a system failure there are multiple solutions.
+    
+    Failover: The backup server takes over the role of the primary server and starts processing client requests, using its up-to-date replica of the system state and data 
+
+    Restore primary server: Once the primary server is restored, it needs to synchronize its data and state with the backup server to ensure that it has the most recent information
+
+    Failback: After the primary server has been restored and synchronized with the backup server, it can resume its role as the primary server, and the backup server returns to its standby mode 
+
+
+
+
