@@ -47,3 +47,7 @@ This section focuses on the design of software for various types of embedded sys
 
 ## Conclusion
 Summarizes the key takeaways from the course and provides additional resources for further learning.
+
+This course was taught by:
+
+- [Arnaldo Oliveira](https://www.ua.pt/pt/p/10319252)

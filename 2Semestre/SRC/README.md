@@ -14,3 +14,7 @@
 - Understand distributed consensus techniques on the Internet.
 - Gain the ability to implement security mechanisms in communication networks.
 - Develop the capability to use current tools and methods for building secure networks.
+
+This course was taught by:
+
+- [Paulo Salvador](https://www.ua.pt/pt/p/10321394)

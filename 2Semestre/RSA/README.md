@@ -62,3 +62,11 @@ Techniques and tools for controlling and managing autonomous networks effectivel
 
 ## Conclusion
 Summarizes the key learning outcomes of the course and provides additional resources for further study.
+
+This course was taught by:
+
+- [Susana Sargento](https://www.ua.pt/pt/p/10319259)
+
+
+
+
