@@ -1,6 +1,4 @@
-# IC - Informação e Codificação
-
-# Information and Coding
+# MECT - Information and Coding
 
 ## Objectives
 
