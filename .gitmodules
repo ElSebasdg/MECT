@@ -4,3 +4,6 @@
 [submodule "1Semestre/IC/IC_Projects"]
 	path = 1Semestre/IC/IC_Projects
 	url = https://github.com/ElSebasdg/IC_Projects.git
+[submodule "1Semestre/CM/1Semestre/CM/cm-project"]
+	path = 1Semestre/CM/1Semestre/CM/cm-project
+	url = https://github.com/goncalo-leal/cm-project.git
