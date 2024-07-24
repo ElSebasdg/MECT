@@ -1,0 +1,17 @@
+SRC aula 1 14/2/2023
+
+-redes devem ser modulares, resilientes e flexiveis
+-rede tem que garantir que quase 100% das vezes os dados nao podem sair dados, mas num ddos 50% é considerado bom
+-switches costumam ter uma porta que tem mais bandwidth
+-uma limitacao fisica da se quando o switch nao tem uma porta com bandwidth suficiente, o que leva a ter de usar multiplas portas o que leva à firewall ter de conseguir aceitar mais que um cabo
+-antigamente so se defendia com uma firewall na entrada da internet, agora mete se uma firewall tambem a saida de edificios e dentro da rede para controlar os fluxos
+-sistema pode analisar que tipo de maquinas um utilizador costuma aceder e que tipo de comandos costuma correr
+-ter redundancia nas firewalls
+-redundancia a mais é um problema
+-aumentar a redundancia aumenta a resiliencia da rede, no entanto aumenta imenso a complexidade da rede e a necessidade de ter mecanismos adicionais
+-clos é spine leaf, a segurança fica entre os spines e os leafs
+-vlans criam grupos de maquinas com os  mesmo ips para terem as mesma configuracoes.
+-vlans locais chegam aos routers e depois é encaminhado o trafico simplesmente
+-vlans end to end é vulneravel a mac spoofing
+-vxlan usado em datacenters, transforma em pacotes ip em pacos ip com udp e vxlan
+-snr pode ser usado para detar jamming

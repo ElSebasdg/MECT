@@ -1,6 +1,4 @@
-# MECT ASE
-
-# Architectures for Embedded Systems
+# MECT ASE - Architectures for Embedded Systems
 
 ## Objectives
 - Understand the specific characteristics of embedded systems, their application areas, and their development process.
@@ -49,9 +47,3 @@ This section focuses on the design of software for various types of embedded sys
 
 ## Conclusion
 Summarizes the key takeaways from the course and provides additional resources for further learning.
-
----
-
-Feel free to explore the content and contribute to this repository. For any questions or suggestions, please open an issue or submit a pull request.
-
-

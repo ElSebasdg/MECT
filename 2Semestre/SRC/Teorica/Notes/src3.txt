@@ -1,0 +1,11 @@
+SRC aula 3 7/3/2023
+
+-aula pratica
+-os clientes do radius sao os switches
+-a password...
+-na captura entre o terminal e o switch, é suposto vermos alguns request identity, pacotes eap, para o nearest-non-TPR-bridge, manda um response identity a dizer a dizer "eu sou o labredes"
+-do lado do server radius, ha uns pacotes RADIUS, e no attribute value pairs, diz que o labredes mandou uma mensagem ao uap de autenticacao
+-protected eap permite usar um canal seguro para trocar pacotes de autenticacao, tipo criar um tunel tls para ser seguro e depois mschapv2(que nao é seguro abertamente), para comunicar as informacoes sensiveis
+
+4. nao ha conexao porque dot1x port-control auto bloqueia a porta para apenas funcionar com um pedido de autenticacao, que temos de programar no PC
+6. auth ativa o log para as autenticacoes, o RADIUS sabe que as credenciais estao corretas porque foram configuradas no ficheiro de users
