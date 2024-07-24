@@ -1,3 +1,6 @@
 [submodule "2Semestre/RSA/RSA_Project2024"]
 	path = 2Semestre/RSA/RSA_Project2024
 	url = https://github.com/ElSebasdg/RSA_Project2024.git
+[submodule "1Semestre/IC/IC_Projects"]
+	path = 1Semestre/IC/IC_Projects
+	url = https://github.com/ElSebasdg/IC_Projects.git
