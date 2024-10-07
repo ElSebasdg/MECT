@@ -1,0 +1,70 @@
+Dec 21 13:46:23.224 HYPERVISOR: Release 0.2.23-amd64/Linux (tag 2023010200)
+Dec 21 13:46:23.224 HYPERVISOR: Started on IP = 127.0.0.1, TCP port = 51269.
+Dec 21 13:46:23.234 HYPERVISOR: exec_cmd: hypervisor version 
+Dec 21 13:46:23.235 HYPERVISOR: exec_cmd: hypervisor working_dir /home/rafael/GNS3/projects/projeto/project-files/dynamips 
+Dec 21 13:46:23.236 GENERAL: working_dir=/home/rafael/GNS3/projects/projeto/project-files/dynamips
+Dec 21 13:46:23.236 HYPERVISOR: exec_cmd: hypervisor working_dir /home/rafael/GNS3/projects/projeto/project-files/dynamips/c6355373-9a10-4694-9f63-42bb2bf418ee 
+Dec 21 13:46:23.236 GENERAL: working_dir=/home/rafael/GNS3/projects/projeto/project-files/dynamips/c6355373-9a10-4694-9f63-42bb2bf418ee
+Dec 21 13:46:23.236 HYPERVISOR: exec_cmd: vm create NewYork 3 c7200 
+Dec 21 13:46:23.237 VM: VM NewYork created.
+Dec 21 13:46:23.238 HYPERVISOR: exec_cmd: vm set_con_tcp_port NewYork 5002 
+Dec 21 13:46:23.238 HYPERVISOR: exec_cmd: c7200 get_mac_addr NewYork 
+Dec 21 13:46:23.238 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 13:46:23.239 HYPERVISOR: exec_cmd: vm slot_add_binding NewYork 0 0 C7200-IO-FE 
+Dec 21 13:46:23.240 HYPERVISOR: exec_cmd: vm set_disk0 NewYork 0 
+Dec 21 13:46:23.241 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 13:46:23.241 HYPERVISOR: exec_cmd: vm set_idle_pc NewYork 0x62cc930c 
+Dec 21 13:46:23.242 HYPERVISOR: exec_cmd: vm set_ios NewYork /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 13:46:23.243 HYPERVISOR: exec_cmd: c7200 set_mac_addr NewYork ca03.5927.0000 
+Dec 21 13:46:23.244 HYPERVISOR: exec_cmd: vm set_nvram NewYork 512 
+Dec 21 13:46:23.245 HYPERVISOR: exec_cmd: vm set_ram NewYork 512 
+Dec 21 13:46:23.245 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 13:46:23.246 HYPERVISOR: exec_cmd: vm slot_remove_binding NewYork 0 0 
+Dec 21 13:46:23.247 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 13:46:23.247 HYPERVISOR: exec_cmd: vm slot_add_binding NewYork 0 0 C7200-IO-2FE 
+Dec 21 13:46:23.248 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 13:46:23.248 HYPERVISOR: exec_cmd: vm slot_add_binding NewYork 1 0 PA-2FE-TX 
+Dec 21 13:46:23.249 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 13:46:23.249 HYPERVISOR: exec_cmd: vm slot_add_binding NewYork 2 0 PA-2FE-TX 
+Dec 21 13:46:23.250 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 13:46:23.250 HYPERVISOR: exec_cmd: vm slot_add_binding NewYork 3 0 PA-2FE-TX 
+Dec 21 13:46:24.548 HYPERVISOR: exec_cmd: nio create_udp udp-663f44aa-4f84-45b8-a77a-ff319ba2ec97 10016 127.0.0.1 10017 
+Dec 21 13:46:24.759 HYPERVISOR: exec_cmd: vm slot_add_nio_binding NewYork 0 0 udp-663f44aa-4f84-45b8-a77a-ff319ba2ec97 
+Dec 21 13:46:24.760 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 13:46:24.860 HYPERVISOR: exec_cmd: nio create_udp udp-32dbcd0f-772a-439d-b631-ceb9adccd512 10020 127.0.0.1 10021 
+Dec 21 13:46:24.861 HYPERVISOR: exec_cmd: vm slot_add_nio_binding NewYork 0 1 udp-32dbcd0f-772a-439d-b631-ceb9adccd512 
+Dec 21 13:46:24.861 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 14:13:56.691 HYPERVISOR: exec_cmd: vm set_ghost_status NewYork 2 
+Dec 21 14:13:56.706 HYPERVISOR: exec_cmd: vm set_ghost_file NewYork /home/rafael/GNS3/projects/projeto/project-files/dynamips/c7200-advipservicesk9-mz.152-4.S5.image-512.ghost 
+Dec 21 14:13:56.706 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 14:13:56.718 HYPERVISOR: exec_cmd: vm set_config NewYork configs/i3_startup-config.cfg 
+Dec 21 14:13:56.718 HYPERVISOR: exec_cmd: vm start NewYork 
+Dec 21 14:14:26.942 HYPERVISOR: exec_cmd: vm extract_config NewYork 
+Dec 21 14:15:17.916 HYPERVISOR: exec_cmd: vm set_ios NewYork /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:15:19.202 HYPERVISOR: exec_cmd: vm set_ios NewYork /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:16:08.247 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 14:16:08.248 HYPERVISOR: exec_cmd: vm slot_disable_nio NewYork 0 0 
+Dec 21 14:16:08.266 HYPERVISOR: exec_cmd: vm slot_remove_nio_binding NewYork 0 0 
+Dec 21 14:16:08.267 HYPERVISOR: exec_cmd: nio delete udp-663f44aa-4f84-45b8-a77a-ff319ba2ec97 
+Dec 21 14:16:14.974 HYPERVISOR: exec_cmd: nio create_udp udp-6355d8c1-6d0d-4d53-b685-6a3c92dd143c 10008 127.0.0.1 10009 
+Dec 21 14:16:14.975 HYPERVISOR: exec_cmd: vm slot_add_nio_binding NewYork 0 0 udp-6355d8c1-6d0d-4d53-b685-6a3c92dd143c 
+Dec 21 14:16:14.975 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 14:16:14.975 HYPERVISOR: exec_cmd: vm slot_enable_nio NewYork 0 0 
+Dec 21 14:16:32.785 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 14:16:32.786 HYPERVISOR: exec_cmd: vm stop NewYork 
+Dec 21 14:16:32.927 VM: VM NewYork shutdown.
+Dec 21 14:16:32.928 HYPERVISOR: exec_cmd: vm extract_config NewYork 
+Dec 21 14:16:54.884 HYPERVISOR: exec_cmd: vm set_ios NewYork /home/rafael/GNS3/images/IOS/c7200-advipservicesk9-mz.152-4.S5.image 
+Dec 21 14:17:24.341 HYPERVISOR: exec_cmd: vm set_ghost_status NewYork 2 
+Dec 21 14:17:24.342 HYPERVISOR: exec_cmd: vm set_ghost_file NewYork /home/rafael/GNS3/projects/projeto/project-files/dynamips/c7200-advipservicesk9-mz.152-4.S5.image-512.ghost 
+Dec 21 14:17:24.343 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 14:17:24.344 HYPERVISOR: exec_cmd: vm set_config NewYork configs/i3_startup-config.cfg 
+Dec 21 14:17:24.344 HYPERVISOR: exec_cmd: vm start NewYork 
+Dec 21 14:26:15.455 HYPERVISOR: exec_cmd: nio create_udp udp-3299229b-ded0-4858-8169-bf41ea127dab 10056 127.0.0.1 10057 
+Dec 21 14:26:15.456 HYPERVISOR: exec_cmd: vm slot_add_nio_binding NewYork 1 0 udp-3299229b-ded0-4858-8169-bf41ea127dab 
+Dec 21 14:26:15.457 HYPERVISOR: exec_cmd: vm get_status NewYork 
+Dec 21 14:26:15.457 HYPERVISOR: exec_cmd: vm slot_enable_nio NewYork 1 0 
+Dec 21 14:49:24.695 HYPERVISOR: exec_cmd: vm extract_config NewYork 
+Dec 21 15:36:22.244 HYPERVISOR: exec_cmd: vm extract_config NewYork 
+Dec 21 16:12:59.776 HYPERVISOR: exec_cmd: vm extract_config NewYork 
+Dec 21 16:28:59.834 HYPERVISOR: exec_cmd: vm extract_config NewYork 

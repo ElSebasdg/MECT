@@ -1,0 +1,17 @@
+Self-Organized Public Key Management (SOPKM) is a system designed to handle the distribution and management of public keys in a decentralized manner. This system is particularly useful in peer-to-peer networks and other decentralized contexts where there is no central authority to manage keys.
+
+In SOPKM, users issue certificates based on personal acquaintance. A certificate is a binding between a node and its public key, consisting of the public key, the identity of the node, and the signature of the issuer. These certificates are stored and distributed by the users themselves, rather than being centrally managed​1​.
+
+If a user, say u, believes that a given public key Kv belongs to another user v, then u can issue a public-key certificate in which Kv is bound to v by the signature of u. This certificate is stored in u's local repository and is also sent to v. Thus, each certificate is stored at least twice: once by its issuer, and once by the user to whom it is issued. Certificates are also issued with a limited validity period​1​.
+
+The SOPKM system also includes a process for updating repositories of certificate graphs and exchanging certificates between nodes. Each node u multicasts its certificate graphs to its physical neighbors (only 1 hop away). Rather than sending the actual certificates, u sends only unique identifiers for them (like their hash values). Nodes that receive these identifiers can then request from u any certificates that they don't already hold​1​.
+
+Certificates are visualized on a global certificate graph, with vertices representing the public keys of nodes and edges representing the public key certificates issued by users. The connectivity of this graph is influenced by social relationships and mobility -- users exchange public keys whenever they meet. A user who wants to obtain the public key of another user can do so by finding a chain of valid public key certificates leading to that user on the graph​1​.
+
+The SOPKM system also includes mechanisms for certificate revocation. A certificate can be revoked either explicitly (each node has a list of nodes that request updates for the certificates they issue) or implicitly (through the expiration time of the certificate)​1​.
+
+Finally, the SOPKM system includes protections against malicious users. During the certificate exchange process, nodes gather virtually all certificates from the network. They cross-check the user-key bindings in these certificates and detect any inconsistencies, such as conflicting certificates. If they find certificates that contain the same username but different public keys, or the same public key but different usernames, they can flag these as potential issues​1​.
+
+
+
+

@@ -1,0 +1,52 @@
+SRC aula 2 28/02/2023
+
+NETWORK SECURITY:
+-os ataques informaticos sao feitos a empresas para roubar planos, dados financeiros, codigo fonte
+-ha ataques de interrupcao de dados ou disrupcao(como denial of service)
+-intercetar para disrupcao: alguem apanhou o codigo para fazer ataques a redes geridas pela empresa. Roubam dados para foder o esquema e logistica à malta
+-disrupcao para intercetar: fazer um ataque no canal seguro e forçar os users a usar um canal menos seguro para sacar os dados
+-as auditorias de segurança fisaclizam tambem a parte fisica tipo acessos as portas ou carrinhas que estao à cuca, falar palavras passe alto
+-denial of service: sobrecarrega o sistema(equipamento ou rede) com trafego para ele deixar de estar disponivel
+-geralmente quem vai abaixo primeiro sao as firewalls
+-se ha uso malicioso duma maquina numa rede, o dono ou empresa é responsabilizado
+-deve se monotorizar o tipo e quantidade de trafego de cada maquina para saber se foi comprometida
+-um ip começar a comunicar com outro que nunca falou antes é uma anomalia ou mandar demasiada informacao
+-esquema de anomalias de comunicacao para cada maquina
+-software pode detetar padroes de comunicacao de um computador e o atacante imita-o para o conseguir dados
+-os ataques sao incrementais, vao saltando para apanhar cada vez maquinas/credenciais mais importantes
+-o problema sao as vulnerabilidades nao conhecidas, é preciso analise constante dos sistemas(pessoas, maquinas, serviços)
+-muitas vulnerabilidades vem de configuracoes estarem default e nao serem mudadas e adaptadas
+-as gaiolas de faraday sao usadas para ondas radio nao entrarem ou sairem de edificiios, evitando o jamming
+-defesas tradicionais: patching para prevenir vulnerabilidades, mas apenas para as vulnerabilidades que ja existem
+- sistemas de controlo de fluxo(firewalls), sistemas de detecao de intrusoes funcionam bem para dominios ja conhecidos, estao a ser desenvolvidos para analisar e reconhecer padroes de utilizacao
+-antivirus, tb usam base de dados maioritariamente, alguns usam analise de padroes
+-defesas inteligentes: usar ai, recolha massiva de dados, é limitado e nada foi desenvolvido apenas planeado
+-ignorou slides 10-12
+-ilicit e legacy devices sao muito perigosos
+
+NETWORK ACCESS CONTROL:
+-aaa: autenticacao, autorizacao e acounting
+-o switch tem uma porta que nao abre ate ser autenticado, pelo servidor central (implementacao tradicional)
+-a versao 802.1x 2004 nao resolve man in the middle, faz autenticacao normal, a versao 2010 faz encriptacao no switch, para a vlan que passa lá
+-o supplicant e o autenticador(switch) falam as credenciais pelo EAP, tira a encriptacao, mete os dados dentro do AAA protocol e manda ao server (o servidor mandar o challenge para o autenticador que reencaminha para o supplicant)
+-TACACS+:Terminal Access Controller Access Control System Plus - teoricamente melhor(mas menos usado) que o radius, que é mais basico, este corre sobre tcp e tem autenticacao mutua, pacotes cifrados
+-RADIUS: Remote Authentication Dial-In User Service - corre sobre udp, so se autentica com os switches no server e nao o contrario, vulneravel a servidores de RADIUS falsos com acesso à vlan de gestao. O pacote nao é cifrado, apenas a parte criptografica do pacote
+-no protocolo RADIUS simples, so ha password encriptada, coms entre switch e server, so ha um request e accept/reject
+-DIAMETER, é tipo RADIUS mas para redes celulares
+-no radius, o switch responde ao terminal com success depois do server dizer ao switch  "accept", com ou sem dados sobre a vlan a que vai ser atribuida ao terminal
+-wpa key exchange, tem dados variaveis nos pacotes dependendo no tipo de autenticao(net em casa VS eduroam), o 802.1x esta escondido nos pacotes
+
+
+TRABALHO PRATICO:
+-fazer coms client-switch-server (supplicant-authenticator-radius)
+-servidor de radius onde os switchs e aps autenticam nele, os clients sao os switchs e os APs e outros clientes com as credenciais dos clientes suplicant, com uma bases de dados com essas duas coisas
+-precisa de switchl3, vm linux, server raidus outra vm linux, desde que tenha network manager
+-vyos so depois das firewalls
+
+
+
+
+
+
+
+

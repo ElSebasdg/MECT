@@ -1,0 +1,48 @@
+1.)
+The middleware serves as a compatability layer bettween the different systems, made to assure portability compatability and security bettween the different systems. It creates an abstraction layer of the harware , network system and OS.JVM can be tough of as middleware since its compiled programs are portable bettween systems and garantees compatability creating platform independent code.
+
+2.)   Diagrama do slide 18 capitulo 5
+
+Thread Base,Service Proxy Agent, Relica of the shared Resource
+
+Thread Base:
+    -instantiates the shared region and the communication channel , after instantiations listens
+    -Create a service proxy agent when a client connection is established
+
+Service Proxy Agent:
+    -determine and execute the operation the client wants to do on the shared resource
+    -return the result of the operation
+
+Shared Resource.
+    -Is the shared resource where the client request will be executed
+
+Since the resource replication model is based on creating multiple copies of the service there exist beside multiple service proxy agents multiple shared regions. Since diferent client execute diferent operations on these diferent copies of the same shared resource there arises the need to synchronize the data to assure data consistency.
+
+3.) Tou farto de fazer merdas destas desamerda-te XoXo
+
+
+4.)
+    Initiate the election: One of the processes detects the need for a coordinator and initiates the election process. This could happen, for example, when the current coordinator fails or when the system starts up without a coordinator.
+
+    Broadcast election message: The initiating process sends an election message to all other processes in the group. In our case, with three processes, the initiating process sends the election message to the other two processes geeksforgeeks.org.
+
+    Respond to election message: Each process that receives the election message compares its own priority or ID with the priority or ID of the sender. If a process has a higher priority or ID, it responds with a message acknowledging its candidacy for the coordinator role.
+
+    Determine the coordinator: The initiating process waits for a specific duration to receive responses from other processes. Based on the responses received, the initiating process can determine the highest priority or ID among the candidates, including itself, and elects the process with the highest priority or ID as the coordinator.
+
+    Announce the coordinator: Once the coordinator has been determined, the initiating process broadcasts a message to all other processes in the group, announcing the new coordinator 
+    
+    
+    
+If there were message loss and system failures just add acknowledges and timeouts.
+
+
+Group B:
+
+
+
+
+
+    
+    
+    

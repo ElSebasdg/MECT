@@ -1,0 +1,45 @@
+1.)(not sure if i understood the question)
+
+Communication trough message passing: Since in a distributed system the adressing space is not shared there is the necessity of developing a mechanism interacting with the different systems, that is message passing.
+
+Failure Handling: The capacity of the distributed sistem to deal with failures in a way that they are not apparent to the user , by implementing fail-safe mechanisms , one example is using the client server model with resource replication.
+
+Global internal state:. The global internal state consists of the current states of all processes and the messages being transmitted between them, it is used as  a way to monitor the whole of the distributed sistem.
+
+
+2.) The publisher Subscriber model is an assimetric model of ditributed systems where one system , the puclisher, acts as a service provider to the subscribers that are service receivers . An intermediary the broker coordindates this exchange, in an assynchronous non blocking way.
+
+To areas of application of this model are content distribution and e-trading. In content distribution the puclisher makes available to the subscriber different types of media (books,videos,articles etc...) for a fee. In e-trading the seller acts as the publisher making available the information about a product the subscribers as clients interested in purshasing the product and the broker exchanges messages between them.
+
+3.) a 0
+    b 1
+    c 2
+    d 7
+    e 8
+    f 0
+    g 2
+    h 3
+    i 4
+    j 9
+    k 10
+    l 0
+    m 4
+    n 5
+    o 6
+    
+    b.) a -> j
+        f || c
+        b -> i
+        m -> e
+        i || o
+        i || e
+        
+4.) 3 problems that need to be Solver for a client-server architecture based on resource replication that need to be solved are:
+    
+    -The need to synchronize the various copies of the same shared region to garantee data integrity and consitency
+    -Determining a policy for managing the systems workload in such a way that no individual system is overworked or undrutilized.
+    -The implementation of failure tolerance together with systems for failure detection, such as data redundancy and heartbeat signals
+    -Scaling up the infrastructure to handle larger demand .Efficient resource management and replication strategies should be implemented to ensure that the system can handle increased workload without compromising performance or reliability or changing too much of the system
+    
+    
+    

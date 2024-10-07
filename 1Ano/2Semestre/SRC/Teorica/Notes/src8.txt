@@ -1,0 +1,14 @@
+SRC aula 8  - 9/5/2023
+
+
+-o openvpn é tls e faz negociacao com os certificados como https
+-servidores de vpn vao para a dmz, o cliente fala com a dmz que depois fala com o inside
+-de fora para a dmz, as regras da FW sao pacificas, o trafego dentro da dmz fica numa vlan, e para dentro do inside tem de haver um accept establish para ips dessa vlan
+-em alternativa, depois de os users estarem na vlan da dmz, passam pela FW outra vez antes de entrar no inside
+
+
+
+-------------------------------------------------------------------------------------
+
+-client de fora tem de comunicar com a dmz
+-os clients da vpn tem de conseguir comunicar com a rede interna

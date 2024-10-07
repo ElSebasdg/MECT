@@ -1,0 +1,107 @@
+1. Quais os modos de comunicação disponíveis no C-V2X? De que forma podem ser utilizados para
+um sistema de platooning (carros em cadeia)? Justifique. (2.5 valores)
+
+Comunicação Direta (PC5 Interface):
+Comunicação independente da rede celular, utilizada para Vehicle-to-Vehicle (V2V), Vehicle-to-Infrastructure (V2I), e Vehicle-to-Person (V2P) em faixas de frequência de ITS (por exemplo, 5.9 GHz).
+
+NUm sistema de platooning:
+Comunicação por Rede (Uu Interface) para utilizar a rede móvel existente para comunicação Vehicle-to-Network (V2N).Características:Utiliza a interface Uu
+    Utiliza LTE para broadcast de mensagens de um servidor V2X para veículos e além.
+
+Comunicação Direta (PC5 Interface):
+Utiliza a interface PC5 para comunicação direta entre os veículos, permitindo a troca de informações sobre velocidade, aceleração e direção em tempo real.
+Isso permite que os veículos da platoon se comuniquem entre si, garantindo a segurança e a eficiência do sistema de platoonin.
+
+Comunicação por Rede (Uu Interface):
+
+Utiliza a interface Uu para comunicação com a rede móvel, permitindo que os veículos recebam informações sobre as condições da estrada e do trânsito em tempo real.
+Isso ajuda a identificar engarrafamentos de tráfego e riscos antes de serem visíveis, tornando o sistema de platooning mais seguro e eficiente
+
+
+
+2  No cenário anterior quais são as diferenças ao nível de funcionalidade e desempenho se for
+utilizado o 4G e 5G atual? Justifique.
+
+
+O 5G apresenta uma latência significativamente menor do que o 4G(menor atraso)
+5G oferece maior largura de banda permitindo a transmissão de grandes quantidades de dados em tempo real. Suporta mais acessos em massa simultaneos do que o 4G. 
+ 5G é projetado para ser mais flexível do que o 4G, permitindo a adaptação a diferentes cenários e aplicações muito util em cenarios de emergencias como engarradfamentos ambulancias trotinetes.
+ 
+ 
+ 3. O TCP-Cubic e TCP-Vegas tentam melhorar o desempenho do protocolo de transporte, no
+entanto, tendo como base pressupostos diferentes ao nível do RTT e das perdas de pacotes. Qual
+deles considera mais interessante para uma rede peer-to-peer e para uma rede veicular,
+respetivamente? Justifique.´
+
+TCP-Cubic: utiliza uma função cúbica para determinar o tamanho da janela de congestionamento, sendo independente do tempo de ida e volta (RTT). Baseada no tempo decorrido desde o último evento de congestionamento.
+ 
+ TCP Vegas: deteta a congestionamento na rede antes que qualquer perda de pacote ocorra e, então, reduz instantaneamente o tamanho da janela de congestionamento. Regula a taxa de envio com base na diferença entre a taxa esperada (janela de congestionamento dividida pela RTT base) e a taxa real (janela de congestionamento dividida pela RTT atual)
+ 
+ o TCP-Cubic é mais interessante para uma rede veicular, pois é mais eficiente em redes de alta velocidade e longa distância. Já o TCP-Vegas é mais adequado para uma rede peer-to-peer, pois é mais sensível ao RTT e às perdas de pacotes, o que é mais comum em redes de baixa velocidade e curta distância.
+ 
+ 
+ 4. Considerando serviços por UDP, proponha uma solução para minimizar as perdas de pacotes
+numa rede de drones que se encontram num espaço controlado, com baixa probabilidade de
+disconexão completa entre eles. 
+
+
+
+Para minimizar as perdas de pacotes numa rede de drones em um espaço controlado, onde a probabilidade de desconexão completa é baixa, uma solução baseada no protocolo QUIC (Quick UDP Internet Connections) é ideal. 
+
+O QUIC oferece várias vantagens, como a separação da confiabilidade e da entrega ordenada de pacotes, o que evita bloqueios na transmissão. Ele também proporciona uma estimativa precisa do tempo de ida e volta (RTT), independente de retransmissões, e utiliza algoritmos de controle de congestionamento que não dependem do RTT como o CUBIC, o que é crucial em ambientes sem fio. 
+
+Além disso, o QUIC possui um controlo de fluxo eficiente, evitando que um único fluxo monopolize os recursos e permite a retransmissão rápida de pacotes não confirmados, reduzindo assim o impacto das perdas. Essas características tornam o QUIC uma solução eficaz para manter a comunicação confiável e com bom desempenho em redes de drones.
+
+
+
+5-  Considerando um sistema de gestão de chaves em redes ad-hoc, como podem os nós, que não se
+conhecem, criar uma relação de confiança? Qual o papel dos sistemas de chaves assimétricas neste
+processo? Justifique.
+
+Sistemas de Chaves Assimétricas
+
+Chaves Públicas: Cada nó tem uma chave pública, que é compartilhada com os demais nós.
+Chaves Privadas: Cada nó tem uma chave privada, que é mantida secreta.
+Autenticação: Quando um nó se conecta à rede, ele envia sua chave pública e uma mensagem autenticada com a chave privada.
+Verificação: Os demais nós verificam a autenticidade da mensagem e a chave pública do nó conectando-se.
+Confiança: Se a autenticidade for confirmada, os demais nós podem confiar no nó conectando-se, pois sabem que ele tem uma chave privada secreta.
+
+
+O sistema de gestão de chaves permite que os nós se conectem e sejam autenticados independentemente da infra-estrutura da rede.
+
+
+
+6. Num sistema de chaves parciais, identifique 2 problemas de segurança que podem acontecer.
+Justifique. 
+
+
+Se múltiplas partes colaborarem de forma maliciosa, elas podem combinar suas partes da chave para obter a chave completa ou realizar operações que não deveriam ser possíveis para um indivíduo isolado.
+
+Se algumas das partes necessárias estiverem inacessíveis ou forem destruídas, pode se tornar impossível realizar operações criptográficas importantes. Além disso, a perda de partes da chave pode resultar na perda permanente de acesso a dados ou na impossibilidade de realizar certas operações.
+
+
+7. Considere duas situações distintas num cenário de sistema de cooperação entre veículos: lane
+merge numa auto-estrada, e entrada numa rotunda com veículos de 4 e 2 rodas. Com as mensagens
+de comunicação estudadas na disciplina, proponha a conceção de um sistema de cooperação:
+
+
+a) Apenas com sistemas de comunicação;
+
+IPFS LALALALA
+
+b) Com ambos os sistemas de sensorização e comunicação. 
+
+CPM (Cooperative Perception Message) permite que veículos, pedestres e infraestruturas compartilhem informações sobre o ambiente, esses sistemas podem aumentar significativamente a consciência situacional e reduzir o risco de acidentes. No entanto, a segurança dos sistemas de chaves parciais utilizados nesses contextos deve ser cuidadosamente considerada para garantir a integridade e a disponibilidade dos dados compartilhados.
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+

@@ -1,0 +1,19 @@
+SRC aula12? 6/6/2023
+
+-cenas para o exame:
+-processo de propagacao é uma maquina comprometida comprometer outras maquinas para chegar aos dados desejados ou a mais dados, no fundo é passar uma coisa anomala de uma maquina para outra. Para detetar propagacao: gera trafego que nunca aconteceu entre maquinas, tipo novas ligacoes, ports diferentes, mais trafedo, intervalo medio entre ligacoes aumentar/diminuir.
+-podemos medir os fluxos nos routers(com netflow ou ipfix) ou maquinas dedicadas(ids), os logs de serviços como load balancers e firewalls
+-infiltracao: alguem de fora compromete uma maquina de dentro, dificil de detetar, por exemplo uma rede social pode dizer "clica aqui, descarrega isto"
+-exfiltracao: roubar dados numa rede: detetavel maioritariamente em base nos fluxos, transferencias de grandes quantidades(tamanho ou nmr ligacao), para sitios que nunca foram falados antes, em horas nao usuais. Detetar ratios anomalos de up/download. Um atacante pode mandar os dados roubados para outra maquina interna e essa segunda é que envia para fora(para disfaçar)
+-criar regras de fluxos: entre os routers e a internet temos de por firewall stateless, ate pode deixar passar tudo mas qnd o sistema inteligente detetam IPs maliciosos, colocam na firewall
+-atras dos routers, devam ir as firewalls stateful que descreminam os fluxos, definimos os dois sentidos ie num sentido passa e noutro so passa respostas. Se estas firewalls estiverem À frente dos routers, temos de criar excecoes para bgp e etc
+-podemos meter firewalls stateful a entrada de cada zona, dos pisso e dos datacenters
+-os loadbalancers devem estar entre a internet e as firewalls stateless, ou ate mesmo no limite antes das firewalls stateful. a ideia é ter loadbalancers antes de cada set de firewalls para as podermos escalar. Eles podem estar dentro da rede se houver muito dinheiro, os LBs as vezes estao depois das firewalls nos datacenters para distruibuir a carga pelos multiplos servers do datacenter
+-serviços para users internos costumam estar nos datacenters ou na dmz, serviço exlusivos para fora estao localizados na dmz. regras para usar isto tem de ter especificado o ip e porto destino
+-os servidores internos podem falar entre eles, para sincronizacao ou algo do genero, 
+-olha para o log a ver se ha muitos 404, das duas uma ou apagaram recursos do site do dia para a noite ou ha alguem a tentar aceder a segredos
+-a resposta a pergunta 4 do exame de 2021 é ipsec
+-a resposta a pergunta 5 do exame de 2021 é 802.1x
+-command and control: maquina comprometida e alguem malicioso de fora quer controla-la(https ou wtv). Trafego mais ou menos simetrico, perto de 1 ou ate mesmo 2:1(up:down). O bot(atacante) abre uma longa sessao(o que é estranho) de https ou dns ou serviço legitimo
+-para detetar command and control duma botnet por https: ver ratios, ver se tem muito mais upload
+-para detetar envio de spam de uma maquina comprometida: ver os logs do servidor do mail para ver 

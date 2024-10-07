@@ -1,0 +1,33 @@
+SCR aula 05 - 19/03/2023
+
+
+-Senario active-active: em vez de ter firewalls montadas em serie, sao montadas em paralelo e o trafego é dividido igualmente pelas firewalls, ha load balancing. Se um for abaixo, ele usa outra firewall
+-as firewalls podem ser sincronizadas, manda as listas de ligacoes para as outras firewalls
+-spoofing: uma maquina usar o ip ou mac address de outra. Para sobrecarregar um servidor privado, fazemos spoofing para o unico server publico com o ip da rede privada, o publico reencaminha para o server privado e sobrecarrega-o. Uma boa pratica é bloquear tudo que venha de fora com ip de origem de redes(privadas ou publicas) que tenhamos do lado de dentro da firewall. Tambem se costuma bloquear ips com endereços multicast na origem
+-reverse path verification: ve se para chegar à rede da origem do pacote é pela mesma interface de onde ele veio, se nao é entao bloqueia. Este cenario pode nao ser funcional quando ha redundancia de redes
+-os switches podem bloquear certos ips se nao tiverem associados a um IP preestablecido
+
+
+----------------------------------------------------------------------------------
+
+-quando chegarmos ao 6 do guiao temos de mudar as rotas estaticas nas firewalls
+-desativar a cache externa faz com que as firewalls fiquem sincronizadas logo nesse momento em vez de ficar a segunda firewall ativa depois da primeira ir abaixo
+-outbound-interface eth0: significa tudo que sai pelo port eth0
+-no ponto 3 nao ha comunicacao porque uma firewall traduz o ip mas nao sincroniza a sua informacao com a outra firewall, e como é assimetrico, um ping vai por cima mas vem por baixo, a firewall de baixo nao consegue traduzir o IP e como é um linux nao o manda para tras de volta para o R2 para evitar loops (explicacao ta bem mas logica ta mal, troquei FW1 com FW2)
+-vrrp  é para definir vizinhança
+- conntrack-sync é para establecer a sincronizacao
+-relatorio do projeto: nao abusar dos comandos/codigo inline, meter no anexo e referenciar as linhas, mostrar pings e tabelas de conntrack, numerar as tabelas e figuras, 
+-no ex9 explicar load balancing, rota estatica... e no ex10 como integramos as zonas e o cenario da firewall (load balancers com reduncia, zonas e regras do firewall)
+
+aula 6:
+-se metermos ospf do lado do inside (entre router e loadbalancers), redistribuir as rotas dos load balancers para os routers. isto substitui as rotas estaticas entre os routers e os loadbalancers
+-o ideal é nao ter as 2 rotas estaticas(em direcao as firewalls) do ex7, mas apenas o set load balancing do ex8, nos loadbalancers. As rotas estaticas sobrepoe se ao load balancing. Para ver que esta a funcionar é meter o comando do iptables, cada tabela é referente a uma das firewalls com a respetiva rota estatica criada
+-os loadbalancers tem de sincronizar o processo aleatorio de escolha de caminhos(dos LB para as FW)
+-as stick connections memorizam de que firewall veio o trafego, ele so memoriza o interface de que vem. Nos LB, os mesmos intefaces devem apontar para as mesmas firewalls, ou seja, em ambos LB o interface 1 deve apontar para a firewall 1
+-o relatorio tem de ser tecnico, explicar as cenas mesmo que correram mal,
+-uma politica é algo geral: tipo ninguem pode aceder ao facebook (quem é que pode aceder a quê?), entre as 9am e 6pm
+-as regras involve ir ao firewall, bloquear o firewall 
+-a dmz nao deve iniciar conexoes
+-definir o ip concreto do serviço e o porto em especifico, tipo na dmz, definir os ip de source e os ips de destino
+-testar com pings upd e tcp, no final podemos meter -w 10000, para esperar 10 segundos, -P 17 é udp, -P 6 é tcp
+- para simular os serviços http, https, dns, ssh etc é bloquear ou permitir certos ports tcp ou udp, para bloquear external users durante ddos attacks é so bloquear certos ips normalmente que consideramos maliciosos

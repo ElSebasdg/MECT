@@ -1,0 +1,140 @@
+1. A given processor presents a 44-bit address bus. What is the maximum
+number of bytes and 64-bit words, expressed approximately as a power of 10,
+it may address? Justify your claim in detail. (2 points)
+
+2⁴⁴ / 2³ = 2⁴¹ bytes = 2TBytes
+2¹⁰ = 1k = 10³
+2²⁰ = 1M = 10⁶
+2³⁰ = 1G = 10⁹
+2⁴⁰ = 1T = 10¹²
+
+Number of bytes = 2⁴¹ bytes ≃ 2*10¹² Bytes ≃ 2TBytes
+                  (2TBytes)
+
+64 bit = 64/8 bytes = 8 = 2³ bytes
+Number of 64-bit words = 2⁴¹ bytes / 2³ bytes = 2³⁸ words = 2³⁰*2⁸ = 256*10¹² words = 256Giga words
+
+
+2. In the 1960s, Michael Flynn studied the parallel computing efforts made so far
+and found a classification that is still popular today. Which are the
+characteristics of computer systems he has used to base his classification?
+How did he name the different categories? Take as an example a quad-core
+processor. In which category would you place it? (2 points)
+
+In the 1960s, Michael Flynn studied the parallel computing efforts which were
+made so far and found a classification that is still popular today. He looked at the
+parallelism in the instruction and data streams called for by the instructions at the
+most constrained component of the multiprocessor and placed all computers in one
+of the four categories:
+• single instruction – single data streams (SISD) – it corresponds to the uniprocessor;
+nevertheless, instruction-level parallelism can still be exploited
+
+• single instruction – multiple data streams (SIMD) – the same instruction is executed
+by multiple processing units using different data streams; this category comprises
+vector architectures, multimedia extensions to standard instruction sets and GPUs
+
+• multiple instruction – single data streams (MISD) – multiple instructions are executed
+upon the same piece of data; no commercial multiprocessor of this type has been
+built yet (although if the piece of data is considered to represent a data vector,
+then systolic arrays may be reasoned to fall in this category)
+
+• multiple instruction – multiple data streams (MIMD) – it targets task-level parallelism
+where each processor runs its own program on its own data; data-level parallelism
+may also be exploited, although the overhead is likely to be higher than in SIMD;
+processor multicores fall in this category.
+
+The quad-core processor is a MIMD processor.
+A quad-core processor is a type of multi-core processor that contains four independent cores on a single chip. Each core is a separate processing unit that can execute instructions independently of the others. This allows for multiple instructions to be executed simultaneously on different data streams, which is the defining characteristic of a MIMD computer system.
+
+
+3. Pipelining is a technique universally used nowadays to speed up instruction
+execution in a processor. Explain in detail how it works. (1.5 points)
+
+Pipelining is an implementation technique where the execution of a generic
+task on the objects of a stream is converted into a set of independent
+subtasks which operate simultaneously on successive objects of the stream.
+Each of the individual subtasks, called pipe stages or segments, is performed in
+sequence and represents a definite fraction of the whole task. Their combined
+ordered execution is equivalent to the execution of the original task on every
+object of the stream.
+The instruction execution process typically includes several stages such as instruction fetch, 
+instruction decode, execution, and memory access.
+A pipelined processor allows multiple instructions to be in various stages of execution at the same time. 
+The pipeline is divided into multiple pipeline stages, each stage responsible for a specific portion of the 
+instruction execution process. Each stage takes a small amount of time to complete, and once completed it 
+passes the instruction to the next stage.
+Pipelining can greatly increase the instruction throughput of a processor, by allowing multiple instructions 
+to be executed in parallel. However, there are some limitations and challenges to pipelining like hazards and 
+dependencies which can slow down the pipeline, but modern processors have mechanisms to handle those cases.
+Ideally, if the pipe stages are almost perfectly balanced and the overhead involved
+in pipelining is negligible, then the ratio t*/t approaches unity and the speed up is
+approximately equal to the number stages used on the partition of the original task
+into subtasks.
+
+4. Dealing with exceptions in a pipelined implementation of a processor is a lot
+harder than in a non-pipelined implementation. Why it is so? (1.5 points)
+
+Dealing with exceptions in a pipelined implementation of a processor is generally more complex than in a
+non-pipelined implementation due to the nature of pipelining.
+In a non-pipelined processor, if an exception occurs during instruction execution, the processor can 
+simply stop the execution of the current instruction and handle the exception. Once the exception is 
+handled, the processor can resume execution of the instruction where it left off.
+In contrast, in a pipelined processor, multiple instructions can be in various stages of execution at 
+the same time. If an exception occurs during instruction execution, it can be difficult to determine which 
+instruction caused the exception and where in the pipeline it is located. The pipeline would have to be flushed,
+and all instructions in the pipeline would have to be discarded and re-executed after the exception is handled.
+Furthermore, since instructions in a pipeline can have dependencies on each other, if an exception occurs and 
+an instruction is discarded, it can cause other instructions in the pipeline to become invalid. This can lead 
+to additional complexity in handling the exception and can result in a significant performance penalty.
+Additionally, in pipelined processors, the pipeline is usually divided into multiple stages, thus, when an 
+exception occurs, it may not be immediately clear which stage of the pipeline the exception occurred in. 
+This requires additional logic and resources to track the instruction position and status in the pipeline, 
+making the handling of exceptions more complex.
+
+
+5. Explain why data hazards of the type WAW can never happen in a processor
+implementing the 5-stage classical pipeline with a single integer execution
+unit. (1 point)
+
+Data hazards can be classified in three different categories depending on the
+combination of operand accesses present in the instructions. A name convention
+is used that portrays the instruction order that must be preserved by the pipeline.
+In a WAW (write after write), the j tries to write a value to an operand before i
+writes its value to it, so the final value is wrong; it arises in pipelines
+that allow writing in more than one pipe stage, or allow out of order
+instruction completion, and corresponds to an output dependence.
+
+
+
+6. The diagram below depicts the cache hierarchy for a multicore processor. (2
+points)
+(anexo)
+	a. Why three cache levels are typically used?
+	
+	b. Why level 1 is usually divided in an instruction and a data cache?
+	
+	c. What kind of write policy is usually applied to them?
+	
+7. Typically, a cache is organized in lines, each capable of storing the contents of
+a given memory block. A line, however, does not store only the contents of the
+memory block. Other information must be present. Which is it? (2 points)
+
+8. Distinguish static from dynamic instruction scheduling. What are the
+advantages the latter has over the former? (2 points)
+
+9. The diagram below depicts the basic organization of a floating point unit using
+the Tomasulo’s algorithm extended to handle speculation. (2 points)
+(anexo)
+
+	a. Explain what is speculation and how it is dealt with in this organization
+	
+	b. With speculation, a further step on instruction execution has to be
+introduced. Which is it?
+
+10.In a vector computer, if the loop length is greater than the size of the vector
+registers a technique, known as strip-mining, is applied by the compiler when
+generating the code. Explain in what it consists. (2 points)
+
+11. When writing a program in CUDA, three optimization criteria must be
+considered for the program to run efficiently in a GPU. Which are they? (2
+points)

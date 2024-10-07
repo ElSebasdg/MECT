@@ -1,0 +1,53 @@
+Compare ITS-G5 and C-V2X
+
+ITS-5G
+- Developed for V2V and V2I communication, based on IEEE 802.11a with CSMA/CA. It allows for real time exchange of information related to traffic conditions, road hazards, vehicles and other relevant data to enhance road safety and efficiency.
+
+C-V2X
+- Operates on the LTE and 5G networks, utilizing the spectrum allocated for cellular communications. It leverages the existing cellular infrastructure, allowing seemless integration into the existing cellular ecosystem, benefiting from the widespread coverage and reliability.
+
+Compare C-V2X and ITS-G5
+Freq band:
+ITS-G5: Operates in the 5.9 GHz frequency band.
+C-V2X: Utilizes licensed cellular spectrum, including LTE and 5G networks.
+
+Communication Range:
+ITS-G5: Provides a long communication range, allowing vehicles to exchange information at a considerable distance.
+C-V2X: Can offer communication over a long range as well, depending on the cellular network coverage.
+
+Infrastructure Integration:
+ITS-G5: Requires dedicated roadside infrastructure (V2I) to support communication with vehicles.
+C-V2X: Leverages existing cellular infrastructure (V2N) for communication, utilizing LTE or 5G networks.
+
+Interoperability:
+ITS-G5: Follows the IEEE 802.11a standard, ensuring interoperability between different vehicle manufacturers and infrastructure providers.
+C-V2X: Aims for global interoperability and can be standardized through the 3rd Generation Partnership Project (3GPP), allowing for communication between vehicles and infrastructure from different regions.
+
+Bit rate:
+ITS-G5: up to 27Mb/sec
+C-V2X: up to 150Mb/sec
+
+Delay
+ITS-G5: <10ms
+C-V2X: <20ms
+
+
+Describe the two Complementary Transmission Modes of C-V2X
+
+Modes of Communication for C-V2X:
+Direct Communication trough interface PC5 for V2V, V2I built upon LTE Direct device-to-device design with enhancements (high speed, low latency ...), operates both in and out of coverage.
+Network Communication trough interface Uu for V2N, using LTE to broadcast messages from a V2X server to vehicles and beyond, vehicles can send messages to the server via unicast. By using the existing LTE networks it provides a wider area for communications, operates only in-range.
+
+What problems do C-V2X solve:
+
+When to cars are moving at very high speeds (high relative speeds) there can be a frequency offset, thus endangering communication. In order to solve this problem C-V2X improved signal design by adding more ref signal symbols, employing frequency compensation, ...
+If we are at a big city in the middle of traffic, the high node density can result in excessive message collisions, to improve this C-V2X sends control and data on the same frame to reduce the numbers of tranmissions (instead of fighting to send 2 messages, we only send 1 msg now) and employ a better method of sensing the medium occupation
+Time synchronization -> use GPS timing
+
+
+Describe the ITS-G5 Challenges:
+
+1- Safety communications rely on the periodic sending of messages about the vehicle current position, speed, direction and about other vehicles aswell: Transmitting such messages at a high frequency to meet latency and accuracy requirements can pose challenges in terms of efficient data transmission and channel utilization.
+2- The lack of ACK / handshakes: Without acknowledgments, it becomes difficult to ensure that all vehicles within the communication range have received the broadcast frames successfully. This lack of feedback can hinder reliable data delivery and introduce uncertainty in the system.
+3- No QoS support: The absence of QoS support in ITS-G5 makes it challenging to guarantee the required level of service for different types of communication.
+4- In high density cases there are packet collisions: Channel congestion can significantly degrade the reliability and effectiveness of communication in ITS-G5 systems.

@@ -1,0 +1,30 @@
+SRC aula10 - 23/5/2023
+
+
+-SOC: security operational center
+-o ideal é medir tudo(mas tudo o que?)
+-idealmente monitorizavamos tudo e guardamavamos o historico, mas gerir o armazenamento é dificil, devemos escolher o que se mede e o que se guarda
+-outro problema é ter os dados nos IDS e passá-los para um ponto central, usando a propria infrastrutura causa sobrecarga com vlans/tuneis e trafego de pacotes extra por eles, idealmente deveria se usar uma estrutura de transporte e outra de monitorizacao
+-o meio termo é ter uma maquina que faz um resumo e envia isso pela rede, mas perde se muita informacao da originalmente captada, pode causar problemas em distinguir nuances nos comportamentos
+-devemos monitorizar o numero de mensagens, ports usados, frequencia de mensagens, tamanho dos pacotes, tamanho total. 
+-monitorizar pessoas, OS, aplicacoes, atividades para criar padroes comportamentais
+-é preciso monitorizar servidores fisicos, servidores virtuais, redes virtuais, cpus, etc
+-fontes de dados: snmp monitoriza mas implementa medidas (tipo bloquear portas dum switch), está limitado porque nao é muito detalhado
+-o que se usa mais sao logs de serviços e fluxos
+-os routers guardam as infos dos fluxos e mandam para os---
+-podemos capturar pacotes por exemplo so numa maquina
+-ao spamar pings, se o ping começar a aumentar muito quer dizer que os pacotes estao a ir dar uma volta enorme e isso ja deve ligar um alarme(mediçoes ativas)
+-netflow pode ser configurado para monitorizar o que entra e o que sai
+-muito pesado para um switch estar a replicar os dados todos, é preciso mais portas de mirror mas isso tira portas normais. Temos é de limitar a uma vlan ou algumas portas
+-serviços syslog é local, rsyslog é remoto, em vez de ficar num ficheiro local manda o ficheiro para um servidor
+-se nao houver rsyslog usa se ssh ou scp ou sftp
+-o SIEM recolhe logs, gere a informacao, faz processamento e/ou parsing e cria um SEC(security event correlation), para criar alertas de segurança. O SIEM costuma estar integrado num SOC, lá investiga se os problemas, responde se aos problemas e até analise forense para perceber como acederam para prevenir ataques futuros
+-
+
+
+
+
+
+
+
+

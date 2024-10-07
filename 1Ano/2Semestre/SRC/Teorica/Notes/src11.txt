@@ -1,0 +1,3 @@
+-dizer quanto trafego as regras tem, nao dizer "muito" ou "Pouco" mas dizer tem x ou y
+-truncar o dataset para 1000 linhas para testar valores
+-o pandas nao funciona bem com ciclos for

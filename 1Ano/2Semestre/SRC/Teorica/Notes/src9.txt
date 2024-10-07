@@ -1,0 +1,4 @@
+SRC aula 09 - 16/05
+
+-IDS: intrusion detection system
+-IPS diz a firewall quem bloquear

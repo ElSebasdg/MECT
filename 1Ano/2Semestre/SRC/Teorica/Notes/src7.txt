@@ -1,0 +1,31 @@
+SRC aula 07 18/4/2023
+
+
+-escolher a opcao de nao apagar os discos virtuais dos routers
+-acertar o relogio do router
+-quem usa o certificado tem de ver se ta na validade e perguntar à entidade certificador se o certificado nao foi revogado
+-tuneis: ligacao virtual, pega no pacote e mete cabeçalhos para ele seguir um caminho especifico ou garantir cifras e segurança(autenticidade e integridade) ou permitir que os pacotes possam ser traduzidos para outros protocolos ou tecnologias
+-ligar varios polos duma empresa com uma rede segura (vpn site to site), maior parte dos tuneis que vamos falar sao estes
+-vpn de utilizador: ligar uma maquina a uma rede
+-criar uma rede overlay é uma vpn mas o privado é ser uma rede so deles com pcs diretamente ligados, nao tem necessariamente segurança
+-full mesh é criar tuneis de todos os pontos, cresce exponencialmente com o numero de elemntos
+-partial mesh é criar um ponto central para os router comunicarem, introduz atraso e ponto de falha, é o geralmente usado
+-numa rede overlay nao é preciso usar nat, porque o overlay network so ve o cabeçalho dos tuneis que usa os endereços publicos
+-tuneis multiponto, um tunel tem multiplos desstinos possiveis, ha um endereço virtual e um endereço de transporte, basicamente é como partial mesh mas em vez do ponto central ser um router, é um tunnel e vai direto.
+-multipoint tunnels usam magia deles com NHRP e tem uma tabela que mapeia os endereços de transporte com os de virtuais e dinamicamente atribui o destino ao header do pacote que vai no tunel
+-nhrp pergunta se ele sabe quem é ao nexto hop server(?)
+-hub-spoke: hub é o ponto central e o spoke sao os routers que tao nas pontas (partial mesh)
+-spoke-spoke depende da implementacao do NHRP
+-ipsec opera em duas maneira: garante so autenticacao/integridade ou cifra(confidentiality)
+-vamos ver pacotes isakmp, o sprimeiros sao main mode, depois sao quick mode(decidem como vao proteger os dados), os pacotes ESP sao ipsec os dados ja cifrados
+-dinamic multipoint vpn nao é nada mais que um tunel multiponto com ipsec
+
+-----------------------------------------------------------------------------------------
+
+-no router 1 so ativamos o nhrp, nos outros é preciso definir o next-hop a apontar para o router 1
+-
+
+
+
+
+

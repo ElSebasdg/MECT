@@ -1,0 +1,62 @@
+1.) Verificar resolução 2022
+
+2.) Thread Base:
+        -instanciate the shared region
+        -instantiate the communication channel in message passing the socket
+        -listen at the communication channel
+        -instantiate a server proxy agent when a it receives a client request 
+    
+    Server Proxy agent
+        -determine the operation the client wants to do on the shared resource
+        -local execution
+        -reply
+
+Marshing and Marshling of the data  is the conversion of data into bytecode , meaning , since the shared resource resides outside of the same adressing space all message values must be passed by value and not by reference.
+
+
+3.) a 1
+    b 4
+    c 5
+    d 6
+    e 2
+    f 3
+    g 4
+    h 5
+    i 2
+    j 3
+    k 6
+    l 7
+    m 8
+    
+ii.) b || g
+     h || c
+     f || j
+     
+     a->i
+     i->j
+     j->c
+     c->d
+     d->l
+     l->m
+     
+iii.) To determine if this is an example of access to a shared resource with mutual exclusion in a distributed way, we need to analyze if the scalar values can be used to establish a total order of events and if there is a mechanism to ensure mutual exclusion.
+
+A scalar clock in a distributed system is a mechanism that assigns a unique scalar value to each event in the system, which can be used to establish a total order of events. However, scalar clocks are not sufficient to determine the causal order of events in a distributed system an additional mechanism is needed to assure mutual exclusion. (ou seja não faço puta)
+
+4. Client Server Model diagram with resource replication.3 problems we need to solve to achieve load balancing are.
+
+    -The system must be be able to distribute the request so that no specific machine is overworked or underutilized acording to a pre-determined policy or algorithm.
+    -The system must be able to properly manage and synchronize the differen copies of the shared resource, mainting some redundancy for fault tolerace.
+    -The system must be able to deal with faults properly, meaning, that it must be able to adapt in case of the failure of one particular machine and upon failure detection properly redistribute its workload.
+
+
+PARTE B
+
+Chico esperto decidiu não fotografar a Store Region e os seus métodos R.I.P
+
+
+
+
+
+
+    

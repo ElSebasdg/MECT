@@ -1,0 +1,23 @@
+SRC aula 4 - 14/3/2023
+
+
+-todas as firewalls sao software, routers que bloqueiam ou nao o trafego
+-firewall decide se o trafego passa ou nao, antes era algo que estava à "porta" duma empresa para proteger a entrada(a internet)
+-agora ha multiplas firewalls
+-tipicamente ha um nivel de firewalls com memoria normal statefull, e antes da internet tem as stateless sem memoria, entre elas deixa se passar tudo, a stateful controlam tudo numa situacao normal, as stateless sao para fazer blacklisting(deixa passar tudo e bloqueia o que sabe que é mau)
+-dmz tem os serviços publicos, geralmente deixa passar trafego que iniciou do lado de fora
+-se as firewalls tiverem entre os routers e a internet, e forem os unicos firewalls (stateful apenas), previne problemas de ataques ao bgp/gestao interna/ipsec. É a melhor soluacao ideal para apenas uma camada de firewalls
+-no caso acima, a dmz nao pode tar ligada aos firewalls, nem pode tar ligada aos routers porque depois nao ha distincao do exterior para a dmz(da parte das firewalls), o ideal é ter uma firewall da dmz ligada à firewall da linha entre a net-routers-
+-os routers podem estar expostos se so fizerem routing muito simples
+-routing de pacotes para vlans nao permitidas resulta num drop
+
+
+
+
+------------------------------
+
+
+-no vyos !todos os endereços da rede 10.1.1.0, que sai pela eth0, é traduzido para 192.1.0.1-192.1.0.10
+-a partir do momento que definimos zonas, ele deixa de passar comunicacao entre zonas
+-respostas "icpm port unreachable" quer dizer que mandamos um ping UDP de uma porta aberta para uma porta fechada, o ping vai UDP mas volta ICMP
+-nas rules das firewalls ha um numero de ordem, as regras com numero mais pequeno sao interpretadas primeiro
