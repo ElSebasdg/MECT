@@ -1,4 +1,0 @@
-
-Beacons are relatively short, regular transmissions from access points (APs) with a purpose to inform user devices (clients) about available Wi-Fi services and near-by access points. Clients use beacons to decide to which AP to connect.
-
-Probe requests are a type of WiFi management frame. They are not encrypted, since they contain no user data. They are used simply for network discovery. But it's common that a device will actively ask for a specific network name.
