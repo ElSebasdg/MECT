@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4, // We have 4 tabs
+      length: 4, // 4 tabs
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Shopping App'),
