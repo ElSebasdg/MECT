@@ -8,12 +8,35 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String name = 'Mike Wasowski';
+  String description = 'Guiado pela mão com Jesus eu vou e sigo como ovelha que encontrou pastor. Guiado pela mão com Jesus eu vou aonde Ele vai.';
+
+  void _editProfile() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditProfile(name: name, description: description)),
+    );
+
+    if (result != null) {
+      setState(() {
+        name = result['name'];
+        description = result['description'];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile Details'),
         backgroundColor: Colors.blueGrey,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: _editProfile,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -27,9 +50,9 @@ class _ProfileState extends State<Profile> {
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Mike Wasowski',
-              style: TextStyle(
+            Text(
+              name,
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
               ),
@@ -57,7 +80,7 @@ class _ProfileState extends State<Profile> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Guiado pela mão com Jesus eu vo e sigo como ovelha que encontrou pastor. Guiado pela mão com Jesus eu vou aonde Ele vai.',
+              description,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.grey[700],
@@ -65,6 +88,80 @@ class _ProfileState extends State<Profile> {
               textAlign: TextAlign.justify,
             ),
             const SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class EditProfile extends StatefulWidget {
+  final String name;
+  final String description;
+
+  const EditProfile({super.key, required this.name, required this.description});
+
+  @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  late TextEditingController _nameController;
+  late TextEditingController _descriptionController;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.name);
+    _descriptionController = TextEditingController(text: widget.description);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+        backgroundColor: Colors.blueGrey,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: () {
+              Navigator.pop(context, {
+                'name': _nameController.text,
+                'description': _descriptionController.text,
+              });
+            },
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(
+                labelText: 'Name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _descriptionController,
+              decoration: const InputDecoration(
+                labelText: 'Description',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 5,
+            ),
           ],
         ),
       ),

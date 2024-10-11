@@ -1,6 +1,51 @@
 import 'package:flutter/material.dart';
 import 'profile.dart'; // Import the profile.dart file
 
+class Cart {
+  final List<CartItem> _items = [];
+
+  void addItem(Product product, int quantity) {
+    final existingItem = _items.firstWhere(
+          (item) => item.product.name == product.name,
+      orElse: () => CartItem(product, 0),
+    );
+
+    if (existingItem.quantity == 0) {
+      _items.add(CartItem(product, quantity));
+    } else {
+      existingItem.quantity += quantity;
+    }
+  }
+
+  void removeItem(Product product) {
+    _items.removeWhere((item) => item.product.name == product.name);
+  }
+
+  void decreaseQuantity(Product product) {
+    final existingItem = _items.firstWhere(
+          (item) => item.product.name == product.name,
+      orElse: () => CartItem(product, 0),
+    );
+
+    if (existingItem.quantity > 1) {
+      existingItem.quantity--;
+    } else {
+      removeItem(product);
+    }
+  }
+
+  List<CartItem> get items => _items;
+
+  double get totalPrice => _items.fold(0, (sum, item) => sum + (item.product.price * item.quantity));
+}
+
+class CartItem {
+  final Product product;
+  int quantity;
+
+  CartItem(this.product, this.quantity);
+}
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -16,6 +61,26 @@ class _HomeState extends State<Home> {
     Product('Relogio Ben 10', 9999999.99, 'assets/images/watch.jpg'),
   ];
 
+  final Cart cart = Cart();
+
+  void addToCart(Product product, int quantity) {
+    setState(() {
+      cart.addItem(product, quantity);
+    });
+  }
+
+  void removeFromCart(Product product) {
+    setState(() {
+      cart.removeItem(product);
+    });
+  }
+
+  void decreaseQuantity(Product product) {
+    setState(() {
+      cart.decreaseQuantity(product);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -23,7 +88,7 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Shopping App'),
-          backgroundColor: Colors.blueGrey, // cor de fundo
+          backgroundColor: Colors.blueGrey,
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.home), text: 'Home'),
@@ -41,15 +106,17 @@ class _HomeState extends State<Home> {
               itemBuilder: (context, index) {
                 final product = products[index];
                 return ListTile(
-                  leading: Image.asset(product.imageUrl), // Product image
-                  title: Text(product.name), // Product name
-                  subtitle: Text('\$${product.price.toString()}'), // Product price
+                  leading: Image.asset(product.imageUrl),
+                  title: Text(product.name),
+                  subtitle: Text('\$${product.price.toString()}'),
                   onTap: () {
-                    // Navigate to product detail page
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProductDetailScreen(product: product),
+                        builder: (context) => ProductDetailScreen(
+                          product: product,
+                          addToCart: addToCart,
+                        ),
                       ),
                     );
                   },
@@ -59,12 +126,15 @@ class _HomeState extends State<Home> {
             // Categories tab
             const Center(child: Text('Categories Placeholder')),
             // Cart tab
-            const Center(child: Text('Cart is Empty')),
+            CartScreen(
+              cart: cart,
+              removeFromCart: removeFromCart,
+              decreaseQuantity: decreaseQuantity,
+            ),
             // Profile tab with button to navigate to Profile screen
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Navigate to the Profile page
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => const Profile()),
@@ -90,13 +160,15 @@ class Product {
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
+  final Function(Product, int) addToCart;
 
-  const ProductDetailScreen({required this.product});
+  const ProductDetailScreen({required this.product, required this.addToCart});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueGrey,
         title: Text(product.name),
       ),
       body: Padding(
@@ -113,7 +185,7 @@ class ProductDetailScreen extends StatelessWidget {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                // Placeholder: Add to cart action
+                addToCart(product, 1);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Added to cart')),
                 );
@@ -123,6 +195,76 @@ class ProductDetailScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class CartScreen extends StatelessWidget {
+  final Cart cart;
+  final Function(Product) removeFromCart;
+  final Function(Product) decreaseQuantity;
+
+  const CartScreen({
+    required this.cart,
+    required this.removeFromCart,
+    required this.decreaseQuantity,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return cart.items.isEmpty
+        ? const Center(child: Text('Cart is Empty'))
+        : Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: cart.items.length,
+            itemBuilder: (context, index) {
+              final item = cart.items[index];
+              return Dismissible(
+                key: Key(item.product.name),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  color: Colors.red,
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.only(right: 20),
+                  child: const Icon(Icons.delete, color: Colors.white),
+                ),
+                onDismissed: (direction) {
+                  removeFromCart(item.product);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('${item.product.name} removed from cart')),
+                  );
+                },
+                child: ListTile(
+                  leading: Image.asset(item.product.imageUrl),
+                  title: Text(item.product.name),
+                  subtitle: Text('Quantity: ${item.quantity}'),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('\$${(item.product.price * item.quantity).toStringAsFixed(2)}'),
+                      IconButton(
+                        icon: const Icon(Icons.remove),
+                        onPressed: () {
+                          decreaseQuantity(item.product);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Total: \$${cart.totalPrice.toStringAsFixed(2)}',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+        ),
+      ],
     );
   }
 }
