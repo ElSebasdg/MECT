@@ -3,9 +3,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
 }
 
+
 android {
     namespace = "pt.ua.practice"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "pt.ua.practice"
@@ -50,7 +51,8 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.mqtt.client)
+    implementation(libs.mqtt.android)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
