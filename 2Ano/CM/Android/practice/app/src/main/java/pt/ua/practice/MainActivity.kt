@@ -1,119 +1,159 @@
 package pt.ua.practice
 
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.BasicText
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.tooling.preview.Preview
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
-import org.eclipse.paho.client.mqttv3.MqttCallback
-import org.eclipse.paho.client.mqttv3.MqttClient
-import org.eclipse.paho.client.mqttv3.MqttMessage
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence
+import kotlinx.coroutines.withContext
+import org.eclipse.paho.android.service.MqttAndroidClient
+import org.eclipse.paho.client.mqttv3.*
 import pt.ua.practice.ui.theme.PracticeTheme
 
 class MainActivity : ComponentActivity() {
-    private lateinit var mqttClient: MqttClient
+
+    private lateinit var mqttClient: MqttAndroidClient
+    private val serverUri = "tcp://test.mosquitto.org:1883"
+    private val topic = "test/compose/topic"
+    private var isMQTTConnected = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+        mqttClient = MqttAndroidClient(applicationContext, serverUri, "compose_client")
+
         setContent {
             PracticeTheme {
-                var messages by remember { mutableStateOf(listOf<String>()) }
-                val coroutineScope = rememberCoroutineScope()
-
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MqttScreen(
-                        messages = messages,
-                        modifier = Modifier.padding(innerPadding)
+                    MQTTApp(
+                        modifier = Modifier.padding(innerPadding),
+                        mqttClient = mqttClient,
+                        topic = topic,
+                        isMQTTConnected = { isMQTTConnected }
                     )
-
-                    // Connect to MQTT broker on launch
-                    LaunchedEffect(Unit) {
-                        coroutineScope.launch(Dispatchers.IO) {
-                            connectToMQTT { newMessage ->
-                                messages = messages + newMessage
-                            }
-                        }
-                    }
                 }
             }
         }
+
+        connectToMQTTBroker()
     }
 
-    private fun connectToMQTT(onMessageReceived: (String) -> Unit) {
-        val brokerUrl = "tcp://test.mosquitto.org:1883"
-        val clientId = "compose_client_${System.currentTimeMillis()}"
+    private fun connectToMQTTBroker() {
+        val options = MqttConnectOptions().apply {
+            isCleanSession = true
+        }
+
+        mqttClient.setCallback(object : MqttCallback {
+            override fun connectionLost(cause: Throwable?) {
+                isMQTTConnected = false
+                Log.d("MQTT", "Connection lost: ${cause?.message}")
+            }
+
+            override fun messageArrived(topic: String?, message: MqttMessage?) {
+                Log.d("MQTT", "Message received: ${message.toString()} on topic: $topic")
+            }
+
+            override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                Log.d("MQTT", "Message delivery complete")
+            }
+        })
 
         try {
-            mqttClient = MqttClient(brokerUrl, clientId, MemoryPersistence())
-            mqttClient.setCallback(object : MqttCallback {
-                override fun connectionLost(cause: Throwable?) {
-                    runOnUiThread {
-                        Toast.makeText(
-                            this@MainActivity,
-                            "Disconnected from broker",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+            mqttClient.connect(options, null, object : IMqttActionListener {
+                override fun onSuccess(asyncActionToken: IMqttToken?) {
+                    isMQTTConnected = true
+                    Log.d("MQTT", "Connected to broker")
                 }
 
-                override fun messageArrived(topic: String, message: MqttMessage) {
-                    val receivedMessage = "Topic: $topic\nMessage: ${message.toString()}"
-                    onMessageReceived(receivedMessage)
-                }
-
-                override fun deliveryComplete(token: IMqttDeliveryToken?) {
-                    // No actions needed here for this example
+                override fun onFailure(asyncActionToken: IMqttToken?, exception: Throwable?) {
+                    isMQTTConnected = false
+                    Log.e("MQTT", "Failed to connect: ${exception?.message}")
                 }
             })
-
-            mqttClient.connect()
-            mqttClient.subscribe("test/flutter/topic")
-
-            runOnUiThread {
-                Toast.makeText(this, "Connected to MQTT broker", Toast.LENGTH_SHORT).show()
-            }
-        } catch (e: Exception) {
+        } catch (e: MqttException) {
             e.printStackTrace()
-            runOnUiThread {
-                Toast.makeText(this, "Failed to connect: ${e.message}", Toast.LENGTH_LONG).show()
-            }
         }
     }
 
     override fun onDestroy() {
-        if (::mqttClient.isInitialized && mqttClient.isConnected) {
-            mqttClient.disconnect()
-        }
+        mqttClient.disconnect()
         super.onDestroy()
     }
 }
 
 @Composable
-fun MqttScreen(messages: List<String>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
-        items(messages.size) { index ->
-            BasicText(text = messages[index])
+fun MQTTApp(
+    modifier: Modifier = Modifier,
+    mqttClient: MqttAndroidClient,
+    topic: String,
+    isMQTTConnected: () -> Boolean
+) {
+    var receivedMessage by remember { mutableStateOf("") }
+    val coroutineScope = rememberCoroutineScope()
+
+    Column(modifier = modifier.padding(16.dp)) {
+        Text(text = "MQTT Jetpack Compose", style = MaterialTheme.typography.titleLarge)
+        Spacer(modifier = Modifier.height(16.dp))
+        Button(onClick = {
+            coroutineScope.launch {
+                if (isMQTTConnected()) {
+                    publishMessage(mqttClient, topic, "Hello from Jetpack Compose!")
+                } else {
+                    Log.e("MQTT", "Client is not connected, cannot publish message")
+                }
+            }
+        }) {
+            Text(text = "Send MQTT Message")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Received Message: $receivedMessage")
+    }
+
+    DisposableEffect(Unit) {
+        mqttClient.setCallback(object : MqttCallback {
+            override fun connectionLost(cause: Throwable?) {
+                Log.d("MQTT", "Connection lost")
+            }
+
+            override fun messageArrived(topic: String?, message: MqttMessage?) {
+                receivedMessage = message.toString()
+            }
+
+            override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                Log.d("MQTT", "Message delivery complete")
+            }
+        })
+        onDispose { }
+    }
+}
+
+suspend fun publishMessage(mqttClient: MqttAndroidClient, topic: String, payload: String) {
+    withContext(Dispatchers.IO) {
+        try {
+            val message = MqttMessage(payload.toByteArray())
+            message.qos = 1
+            mqttClient.publish(topic, message)
+        } catch (e: MqttException) {
+            Log.e("MQTT", "Error publishing message: ${e.message}")
         }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MQTTAppPreview() {
     PracticeTheme {
-        MqttScreen(messages = listOf("Sample Message 1", "Sample Message 2"))
+        MQTTApp(
+            mqttClient = MqttAndroidClient(null, "", ""),
+            topic = "test",
+            isMQTTConnected = { false }
+        )
     }
 }

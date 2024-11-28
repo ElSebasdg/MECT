@@ -51,8 +51,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.mqtt.client)
-    implementation(libs.mqtt.android)
+    implementation(libs.localbroadcastmanager)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.material)
+    implementation(libs.compose.tooling)
+    implementation(libs.mqtt)
+    implementation(libs.mqttAndroid)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

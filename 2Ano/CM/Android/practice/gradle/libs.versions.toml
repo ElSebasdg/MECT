@@ -8,10 +8,20 @@ espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.9.3"
 composeBom = "2024.04.01"
+mqtt = "1.2.5"
+mqtt-android = "1.1.1"
+compose = "1.5.0" # Ou versão compatível com o projeto
+
 
 [libraries]
-mqtt-client = { module = "org.eclipse.paho:org.eclipse.paho.client.mqttv3", version = "1.2.5" }
-mqtt-android = { module = "org.eclipse.paho:org.eclipse.paho.android.service", version = "1.1.1" }
+mqtt = { group = "org.eclipse.paho", name = "org.eclipse.paho.client.mqttv3", version.ref = "mqtt" }
+mqttAndroid = { group = "org.eclipse.paho", name = "org.eclipse.paho.android.service", version.ref = "mqtt-android" }
+compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "compose" }
+compose-material = { group = "androidx.compose.material", name = "material", version.ref = "compose" }
+compose-tooling = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "compose" }
+localbroadcastmanager = { group = "androidx.localbroadcastmanager", name = "localbroadcastmanager", version = "1.1.0" }
+
+
 
 # Outras dependências existentes
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
