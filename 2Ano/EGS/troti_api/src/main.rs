@@ -863,19 +863,7 @@ socket.onerror = function(error) {
                                     });
                                 }
                             }
-                            
-                            // Initialize Google Maps when the page loads
-                            function initMap() {
-                                map = new google.maps.Map(document.getElementById('map'), {
-                                    zoom: 14,
-                                    center: { lat: 41.1579, lng: -8.6291 }, // Porto, Portugal
-                                    mapTypeId: 'roadmap'
-                                });
-                            }
-                        </script>
-                        
-                        <!-- Load Google Maps API -->
-                        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBplCFe-qHGpkPDkG9KRGaM-ZlqO2Cpg64&callback=initMap" async defer></script>
+                           
                     </body>
                     </html>
                 "#)
